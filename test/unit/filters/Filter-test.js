@@ -1,7 +1,7 @@
 'use strict';
 
-suite('Filter', function() {
-  test('pixelRaio check', function() {
+suite('Filter', function () {
+  test('pixelRaio check', function () {
     Konva.pixelRatio = 2;
     var stage = addStage();
     var layer = new Konva.Layer();
@@ -11,7 +11,7 @@ suite('Filter', function() {
       y: stage.height() / 2,
       fill: 'red',
       stroke: 'green',
-      radius: 15
+      radius: 15,
     });
 
     layer.add(circle);
@@ -21,9 +21,7 @@ suite('Filter', function() {
     circle.blurRadius(0);
     layer.draw();
 
-    if (!window.isPhantomJS) {
-      cloneAndCompareLayer(layer, 50);
-    }
+    cloneAndCompareLayer(layer, 50);
     Konva.pixelRatio = 1;
   });
 });

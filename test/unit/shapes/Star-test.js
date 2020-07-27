@@ -1,6 +1,6 @@
-suite('Star', function() {
+suite('Star', function () {
   // ======================================================
-  test('add five point star', function() {
+  test('add five point star', function () {
     var stage = addStage();
 
     var layer = new Konva.Layer();
@@ -17,12 +17,12 @@ suite('Star', function() {
       name: 'foobar',
       center: {
         x: 0,
-        y: -70
+        y: -70,
       },
       scale: {
         x: 0.5,
-        y: 0.5
-      }
+        y: 0.5,
+      },
     });
 
     layer.add(star);
@@ -32,7 +32,7 @@ suite('Star', function() {
   });
 
   // ======================================================
-  test('add star with line join and shadow', function() {
+  test('add star with line join and shadow', function () {
     var stage = addStage();
     var layer = new Konva.Layer();
 
@@ -41,7 +41,7 @@ suite('Star', function() {
       y: 75,
       width: 100,
       height: 100,
-      fill: 'red'
+      fill: 'red',
     });
 
     var star = new Konva.Star({
@@ -56,9 +56,9 @@ suite('Star', function() {
       lineJoin: 'round',
       shadowColor: 'black',
       shadowBlur: 10,
-      shadowOffset: [20, 20],
+      shadowOffset: { x: 20, y: 20 },
       shadowOpacity: 0.5,
-      draggable: true
+      draggable: true,
     });
 
     layer.add(rect);
@@ -74,7 +74,7 @@ suite('Star', function() {
   });
 
   // ======================================================
-  test('attr sync', function() {
+  test('attr sync', function () {
     var stage = addStage();
     var layer = new Konva.Layer();
 
@@ -90,9 +90,9 @@ suite('Star', function() {
       lineJoin: 'round',
       shadowColor: 'black',
       shadowBlur: 10,
-      shadowOffset: [20, 20],
+      shadowOffset: { x: 20, y: 20 },
       shadowOpacity: 0.5,
-      draggable: true
+      draggable: true,
     });
 
     layer.add(star);
@@ -112,7 +112,7 @@ suite('Star', function() {
   });
 
   // ======================================================
-  test('star cache', function() {
+  test('star cache', function () {
     var stage = addStage();
     var layer = new Konva.Layer();
 
@@ -123,14 +123,14 @@ suite('Star', function() {
       innerRadius: 30,
       outerRadius: 50,
       fill: 'green',
-      stroke: 'blue',
+      stroke: 'black',
       strokeWidth: 5,
       lineJoin: 'round',
       shadowColor: 'black',
       shadowBlur: 10,
-      shadowOffset: [20, 20],
+      shadowOffset: { x: 20, y: 20 },
       shadowOpacity: 0.5,
-      draggable: true
+      draggable: true,
     });
 
     layer.add(star);
@@ -141,8 +141,8 @@ suite('Star', function() {
       x: -50,
       y: -50,
       height: 100,
-      width: 100
+      width: 100,
     });
-    cloneAndCompareLayer(layer, 50);
+    cloneAndCompareLayer(layer, 100);
   });
 });

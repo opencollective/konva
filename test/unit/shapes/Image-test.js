@@ -1,8 +1,8 @@
-suite('Image', function() {
+suite('Image', function () {
   // ======================================================
-  test('add image', function(done) {
+  test('add image', function (done) {
     var imageObj = new Image();
-    imageObj.onload = function() {
+    imageObj.onload = function () {
       var stage = addStage();
 
       var layer = new Konva.Layer();
@@ -14,7 +14,7 @@ suite('Image', function() {
         height: 100,
         offset: { x: 50, y: 30 },
         crop: { x: 135, y: 7, width: 167, height: 134 },
-        draggable: true
+        draggable: true,
       });
 
       layer.add(darth);
@@ -46,7 +46,7 @@ suite('Image', function() {
         x: 8,
         y: 9,
         width: 10,
-        height: 11
+        height: 11,
       });
       crop = darth.getCrop();
       assert.equal(crop.x, 8);
@@ -91,7 +91,7 @@ suite('Image', function() {
         offsetX: 50,
         offsetY: 30,
         crop: { x: 135, y: 7, width: 167, height: 134 },
-        draggable: true
+        draggable: true,
       });
 
       //document.body.appendChild(layer.bufferCanvas.element)
@@ -112,12 +112,12 @@ suite('Image', function() {
   });
 
   // ======================================================
-  test('crop and scale image', function(done) {
+  test('crop and scale image', function (done) {
     var imageObj = new Image();
-    imageObj.onload = function() {
+    imageObj.onload = function () {
       var stage = addStage();
       var layer = new Konva.Layer();
-      darth = new Konva.Image({
+      var darth = new Konva.Image({
         x: 200,
         y: 75,
         image: imageObj,
@@ -125,7 +125,7 @@ suite('Image', function() {
         height: 75,
         crop: { x: 186, y: 211, width: 106, height: 74 },
         draggable: true,
-        scale: [0.5, 0.5]
+        scale: { x: 0.5, y: 0.5 },
       });
 
       layer.add(darth);
@@ -174,19 +174,20 @@ suite('Image', function() {
   });
 
   // ======================================================
-  test.skip('image with svg source', function(done) {
+  // TODO: what can we test here?
+  test('image with svg source', function (done) {
     var imageObj = new Image();
 
     var stage = addStage();
     var layer = new Konva.Layer();
 
-    imageObj.onload = function() {
+    imageObj.onload = function () {
       var tiger = new Konva.Image({
         x: 0,
         y: 0,
         image: imageObj,
         draggable: true,
-        scale: 0.25
+        scale: { x: 0.25, y: 0.25 },
       });
 
       layer.add(tiger);
@@ -198,7 +199,7 @@ suite('Image', function() {
   });
 
   // ======================================================
-  test.skip('opacity test for image with svg source', function(done) {
+  test.skip('opacity test for image with svg source', function (done) {
     var imageObj = new Image();
 
     var stage = addStage();
@@ -208,18 +209,18 @@ suite('Image', function() {
       new Konva.Line({
         points: [0, 0, 578, 200],
         stroke: 'black',
-        strokeWidth: 5
+        strokeWidth: 5,
       })
     );
 
-    imageObj.onload = function() {
+    imageObj.onload = function () {
       var tiger = new Konva.Image({
         x: 0,
         y: 0,
         image: imageObj,
         draggable: true,
-        scale: 0.25,
-        opacity: 0.5
+        scaleX: 0.25,
+        opacity: 0.5,
       });
 
       layer.add(tiger);
@@ -228,7 +229,7 @@ suite('Image', function() {
         new Konva.Line({
           points: [578, 0, 0, 200],
           stroke: 'blue',
-          strokeWidth: 5
+          strokeWidth: 5,
         })
       );
 
@@ -241,9 +242,9 @@ suite('Image', function() {
   });
 
   // ======================================================
-  test('image with opacity and shadow', function(done) {
+  test('image with opacity and shadow', function (done) {
     var imageObj = new Image();
-    imageObj.onload = function() {
+    imageObj.onload = function () {
       var stage = addStage();
 
       var layer = new Konva.Layer();
@@ -259,7 +260,7 @@ suite('Image', function() {
         shadowColor: 'black',
         shadowBlur: 10,
         shadowOpacity: 0.1,
-        shadowOffset: { x: 20, y: 20 }
+        shadowOffset: { x: 20, y: 20 },
       });
 
       layer.add(darth);
@@ -269,7 +270,7 @@ suite('Image', function() {
       //console.log(trace);
       assert.equal(
         trace,
-        'clearRect(0,0,578,200);save();transform(1,0,0,1,150,30);save();globalAlpha=0.5;shadowColor=rgba(0,0,0,0.1);shadowBlur=10;shadowOffsetX=20;shadowOffsetY=20;drawImage([object HTMLImageElement],0,0,100,100);restore();restore();'
+        'clearRect(0,0,578,200);save();transform(1,0,0,1,150,30);globalAlpha=0.5;shadowColor=rgba(0,0,0,0.1);shadowBlur=10;shadowOffsetX=20;shadowOffsetY=20;drawImage([object HTMLImageElement],0,0,100,100);restore();'
       );
 
       done();
@@ -278,9 +279,9 @@ suite('Image', function() {
   });
 
   // ======================================================
-  test('image with stroke, opacity and shadow', function(done) {
+  test('image with stroke, opacity and shadow', function (done) {
     var imageObj = new Image();
-    imageObj.onload = function() {
+    imageObj.onload = function () {
       var stage = addStage();
 
       var layer = new Konva.Layer();
@@ -298,7 +299,7 @@ suite('Image', function() {
         shadowOpacity: 0.5,
         shadowOffset: { x: 20, y: 20 },
         stroke: 'red',
-        strokeWidth: 20
+        strokeWidth: 20,
       });
 
       layer.add(darth);
@@ -308,7 +309,7 @@ suite('Image', function() {
       //console.log(trace);
       assert.equal(
         trace,
-        'clearRect(0,0,578,200);save();save();shadowColor=rgba(0,0,0,0.5);shadowBlur=10;shadowOffsetX=20;shadowOffsetY=20;globalAlpha=0.5;drawImage([object HTMLCanvasElement],0,0,578,200);restore();restore();'
+        'clearRect(0,0,578,200);save();shadowColor=rgba(0,0,0,0.5);shadowBlur=10;shadowOffsetX=20;shadowOffsetY=20;globalAlpha=0.5;drawImage([object HTMLCanvasElement],0,0,578,200);restore();'
       );
 
       done();
@@ -317,9 +318,9 @@ suite('Image', function() {
   });
 
   // ======================================================
-  test('image caching', function(done) {
+  test('image caching', function (done) {
     var imageObj = new Image();
-    imageObj.onload = function() {
+    imageObj.onload = function () {
       var stage = addStage();
       var layer = new Konva.Layer();
       var darth = new Konva.Image({
@@ -328,7 +329,7 @@ suite('Image', function() {
         image: imageObj,
         width: 100,
         height: 100,
-        draggable: true
+        draggable: true,
       });
 
       darth.cache();
@@ -339,7 +340,7 @@ suite('Image', function() {
         x: 0,
         y: 0,
         width: 100,
-        height: 100
+        height: 100,
       });
 
       var canvas = createCanvas();
@@ -351,12 +352,12 @@ suite('Image', function() {
     imageObj.src = 'assets/darth-vader.jpg';
   });
 
-  test('image loader', function(done) {
+  test('image loader', function (done) {
     var stage = addStage();
     var layer = new Konva.Layer();
     stage.add(layer);
     var src = 'assets/darth-vader.jpg';
-    Konva.Image.fromURL(src, function(image) {
+    Konva.Image.fromURL(src, function (image) {
       layer.add(image);
       layer.draw();
       assert.equal(image instanceof Konva.Image, true);
@@ -364,6 +365,25 @@ suite('Image', function() {
       assert.equal(nativeImg instanceof Image, true);
       assert.equal(nativeImg.src.indexOf(src) !== -1, true);
       assert.equal(nativeImg.complete, true);
+      done();
+    });
+  });
+
+  test('check zero values', function (done) {
+    var stage = addStage();
+    var layer = new Konva.Layer();
+    stage.add(layer);
+    var src = 'assets/darth-vader.jpg';
+    Konva.Image.fromURL(src, function (image) {
+      layer.add(image);
+      layer.draw();
+
+      image.width(0);
+      image.height(0);
+      layer.draw();
+
+      assert.equal(image.width(), 0);
+      assert.equal(image.height(), 0);
       done();
     });
   });

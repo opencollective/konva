@@ -33,21 +33,19 @@
   <div id="mocha"></div>
   <div id="konva-container"></div>
 
+  <!-- TODO: use parcel for tests -->
+
   <script src="../node_modules/mocha/mocha.js"></script>
   <script src="../node_modules/chai/chai.js"></script>
   <script src="lib/stats.js"></script>
 
-  <!--<script src="lib/blanket.js"></script>-->
-
-  <!--CORE-->
-  <script src="../src/Global.js" data-cover></script>
+  <!-- <script src="../src/Global.js" data-cover></script>
   <script src="../src/Util.js" data-cover></script>
   <script src="../src/Canvas.js" data-cover></script>
   <script src="../src/Context.js" data-cover></script>
   <script src="../src/Factory.js" data-cover></script>
   <script src="../src/Node.js" data-cover></script>
 
-  <!--FILTERS-->
   <script src="../src/filters/Grayscale.js" data-cover></script>
   <script src="../src/filters/Brighten.js" data-cover></script>
   <script src="../src/filters/Invert.js" data-cover></script>
@@ -68,8 +66,6 @@
   <script src="../src/filters/Solarize.js" data-cover></script>
   <script src="../src/filters/Kaleidoscope.js" data-cover></script>
 
-  <!--MAIN ELEMENTS-->
-
   <script src="../src/Container.js" data-cover></script>
   <script src="../src/Shape.js" data-cover></script>
   <script src="../src/Stage.js" data-cover></script>
@@ -81,7 +77,6 @@
   <script src="../src/Tween.js" data-cover></script>
   <script src="../src/DragAndDrop.js" data-cover></script>
 
-  <!--SHAPES-->
   <script src="../src/shapes/Rect.js" data-cover></script>
   <script src="../src/shapes/Circle.js" data-cover></script>
   <script src="../src/shapes/Ellipse.js" data-cover></script>
@@ -98,9 +93,10 @@
   <script src="../src/shapes/Star.js" data-cover></script>
   <script src="../src/shapes/Label.js" data-cover></script>
   <script src="../src/shapes/Arrow.js" data-cover></script>
-  <script src="../src/shapes/Transformer.js" data-cover></script>
+  <script src="../src/shapes/Transformer.js" data-cover></script> -->
 
-  <!--<script src="../dist/konva-dev.js"></script>-->
+  <script src="../konva.js"></script>
+  <!-- <script src="https://unpkg.com/konva@2.4.2/konva.min.js"></script> -->
 
   <script src="lib/imagediff.js"></script>
   <script src="runner.js"></script>
@@ -181,6 +177,7 @@
 
   <script src="functional/MouseEvents-test.js"></script>
   <script src="functional/TouchEvents-test.js"></script>
+  <script src="functional/PointerEvents-test.js"></script>
   <script src="functional/DragAndDropEvents-test.js"></script>
 
   <!--=============== manual tests ================-->

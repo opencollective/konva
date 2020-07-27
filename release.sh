@@ -4,11 +4,12 @@ set -e
 old_version="$(git describe --abbrev=0 --tags)"
 new_version=$1
 
-old_cdn="https://cdn.rawgit.com/konvajs/konva/${old_version}/konva.js"
-new_cdn="https://cdn.rawgit.com/konvajs/konva/${new_version}/konva.js"
 
-old_cdn_min="https://cdn.rawgit.com/konvajs/konva/${old_version}/konva.min.js"
-new_cdn_min="https://cdn.rawgit.com/konvajs/konva/${new_version}/konva.min.js"
+old_cdn="https://unpkg.com/konva@${old_version}/konva.js"
+new_cdn="https://unpkg.com/konva@${new_version}/konva.js"
+
+old_cdn_min="https://unpkg.com/konva@${old_version}/konva.min.js"
+new_cdn_min="https://unpkg.com/konva@${new_version}/konva.min.js"
 
 # make sure new version parameter is passed
 if [ -z "$1" ]
@@ -27,38 +28,38 @@ while true; do
     esac
 done
 
-echo "Pulling"
-git pull
+echo "Old version: ${old_version}"
+echo "New version: ${new_version}"
 
-echo "lint and test"
-npm start lint test
+echo "Pulling"
+git pull >/dev/null
+
+echo "Lint, build and test"
+npm run lint >/dev/null
+npm run full-build >/dev/null
+
 
 echo "commit change log updates"
-git commit -am "update CHANGELOG with new version" --allow-empty
+git commit -am "update CHANGELOG with new version" --allow-empty >/dev/null
 
 echo "npm version $1 --no-git-tag-version"
-npm version $1 --no-git-tag-version
+npm version $1 --no-git-tag-version --allow-same-version >/dev/null
 
 echo "build for $1"
-npm start build
-git commit -am "build for $1" --allow-empty
+npm run build >/dev/null
+git commit -am "build for $1" --allow-empty >/dev/null
 
 echo "update CDN link in REAME"
-perl -i -pe "s|${old_cdn_min}|${new_cdn_min}|g" ./README.md
-git commit -am "update cdn link" --allow-empty
+perl -i -pe "s|${old_cdn_min}|${new_cdn_min}|g" ./README.md >/dev/null
+git commit -am "update cdn link" --allow-empty >/dev/null
 
 echo "create new git tag"
-git tag $1
+git tag $1 >/dev/null
 
-echo "generate documentation"
-npm start api
-
-echo "archive documentation"
-zip -r konva-v${new_version}-documentation.zip ./api/*
-rm -r ./api
-
-echo "documentation is generated"
-echo "include konva-v${new_version}-documentation.zip into version in github"
+cd ../konva
+git push >/dev/null
+git push --tags >/dev/null
+npm publish >/dev/null
 
 echo "copy konva.js into konva-site"
 cp ./konva.js ../konva-site/
@@ -67,21 +68,10 @@ cd ../konva-site
 echo "replace CDN links"
 
 
-find source themes -exec perl -i -pe "s|${old_cdn}|${new_cdn}|g" {} +
-
-find source themes -exec perl -i -pe "s|${old_cdn_min}|${new_cdn_min}|g" {} +
+find source themes/hexo3/layout react-demos vue-demos main-demo -name "*.json" -exec perl -i -pe "s|${old_version}|${new_version}|g" {} + >/dev/null
+find source themes/hexo3/layout react-demos vue-demos main-demo -name "*.html" -exec perl -i -pe "s|${old_version}|${new_version}|g" {} + >/dev/null
 
 echo "regenerate site"
-./deploy.sh
-
-cd ../konva
-git push
-git push --tags
-npm publish
+./deploy.sh >/dev/null
 
 echo "DONE!"
-
-echo "-------"
-echo "Now you need:"
-echo "create new relese in github and attach documentation https://github.com/konvajs/konva/releases"
-echo "update CDN link to ${new_cdn} at http://codepen.io/lavrton/pen/myBPGo"
