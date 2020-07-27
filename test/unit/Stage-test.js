@@ -1,6 +1,6 @@
-suite('Stage', function() {
+suite('Stage', function () {
   // ======================================================
-  test('instantiate stage with id', function() {
+  test('instantiate stage with id', function () {
     var container = Konva.document.createElement('div');
     container.id = 'container';
 
@@ -9,7 +9,7 @@ suite('Stage', function() {
     var stage = new Konva.Stage({
       container: 'container',
       width: 578,
-      height: 200
+      height: 200,
     });
 
     assert.equal(stage.getContent().className, 'konvajs-content');
@@ -17,7 +17,7 @@ suite('Stage', function() {
   });
 
   // ======================================================
-  test('test stage buffer canvas and hit buffer canvas', function() {
+  test('test stage buffer canvas and hit buffer canvas', function () {
     var container = Konva.document.createElement('div');
     container.id = 'container';
 
@@ -29,7 +29,7 @@ suite('Stage', function() {
     var stage = new Konva.Stage({
       container: 'container',
       width: 578,
-      height: 200
+      height: 200,
     });
 
     assert.equal(stage.bufferCanvas.getPixelRatio(), 2);
@@ -40,7 +40,7 @@ suite('Stage', function() {
   });
 
   // ======================================================
-  test('instantiate stage with dom element', function() {
+  test('instantiate stage with dom element', function () {
     var container = Konva.document.createElement('div');
 
     konvaContainer.appendChild(container);
@@ -48,12 +48,12 @@ suite('Stage', function() {
     var stage = new Konva.Stage({
       container: container,
       width: 578,
-      height: 200
+      height: 200,
     });
   });
 
   // ======================================================
-  test('stage instantiation should clear container', function() {
+  test('stage instantiation should clear container', function () {
     var container = Konva.document.createElement('div');
     var dummy = Konva.document.createElement('p');
 
@@ -63,7 +63,7 @@ suite('Stage', function() {
     var stage = new Konva.Stage({
       container: container,
       width: 578,
-      height: 200
+      height: 200,
     });
 
     assert.equal(
@@ -74,7 +74,7 @@ suite('Stage', function() {
   });
 
   // ======================================================
-  test('test stage cloning', function() {
+  test('test stage cloning', function () {
     var stage = addStage();
     var layer = new Konva.Layer();
     stage.add(layer);
@@ -94,7 +94,7 @@ suite('Stage', function() {
   });
 
   // ======================================================
-  test('set stage size', function() {
+  test('set stage size', function () {
     var stage = addStage();
 
     var layer = new Konva.Layer();
@@ -106,7 +106,7 @@ suite('Stage', function() {
       fill: 'green',
       stroke: 'black',
       strokeWidth: 4,
-      name: 'myCircle'
+      name: 'myCircle',
     });
 
     assert.equal(stage.getSize().width, 578);
@@ -119,7 +119,7 @@ suite('Stage', function() {
     assert.equal(stage.getSize().height, 3);
     stage.setSize({
       width: 4,
-      height: 5
+      height: 5,
     });
     assert.equal(stage.getSize().width, 4);
     assert.equal(stage.getSize().height, 5);
@@ -156,14 +156,67 @@ suite('Stage', function() {
   });
 
   // ======================================================
-  test('get stage DOM', function() {
+  test('get stage DOM', function () {
     var stage = addStage();
 
     assert.equal(stage.getContent().className, 'konvajs-content');
   });
 
+  test('try to move stage ', function () {
+    var stage = addStage();
+    var container = document.createElement('div');
+    var wrap = stage.container().parentNode;
+    wrap.appendChild(container);
+
+    stage.container(container);
+
+    assert.equal(stage.container(), container);
+
+    assert.equal(stage.content, container.children[0]);
+  });
+
+  test('clone stage ', function () {
+    var stage = addStage();
+    var layer = new Konva.Layer();
+    stage.add(layer);
+
+    var shape = new Konva.Circle({
+      x: stage.width() / 2,
+      y: stage.height() / 2,
+      radius: 70,
+      strokeWidth: 4,
+      fill: 'red',
+      stroke: 'black',
+    });
+    layer.add(shape);
+    layer.draw();
+
+    var container = document.createElement('div');
+    var wrap = stage.container().parentNode;
+    wrap.appendChild(container);
+
+    var clone = stage.clone();
+    clone.container(container);
+
+    assert.equal(clone.container(), container);
+
+    assert.equal(clone.content, container.children[0]);
+  });
+
+  test('dangling stage ', function () {
+    var stage = addStage();
+    var container = stage.container();
+    var parent = stage.content.parentElement;
+
+    parent.removeChild(stage.content);
+
+    stage.setContainer(container);
+
+    assert.equal(stage.container(), container);
+  });
+
   // ======================================================
-  test('stage getIntersection()', function() {
+  test('stage getIntersection()', function () {
     var stage = addStage();
     var layer = new Konva.Layer();
 
@@ -174,7 +227,6 @@ suite('Stage', function() {
       strokeWidth: 4,
       fill: 'red',
       stroke: 'black',
-      id: 'redCircle'
     });
 
     var greenCircle = new Konva.Circle({
@@ -184,7 +236,6 @@ suite('Stage', function() {
       strokeWidth: 4,
       fill: 'green',
       stroke: 'black',
-      id: 'greenCircle'
     });
 
     layer.add(redCircle);
@@ -192,13 +243,13 @@ suite('Stage', function() {
     stage.add(layer);
 
     assert.equal(
-      stage.getIntersection({ x: 300, y: 100 }).getId(),
-      'greenCircle',
+      stage.getIntersection({ x: 300, y: 100 }),
+      greenCircle,
       'shape should be greenCircle'
     );
     assert.equal(
-      stage.getIntersection({ x: 380, y: 100 }).getId(),
-      'redCircle',
+      stage.getIntersection({ x: 380, y: 100 }),
+      redCircle,
       'shape should be redCircle'
     );
     assert.equal(
@@ -209,14 +260,14 @@ suite('Stage', function() {
   });
 
   // ======================================================
-  test('layer getIntersection() with selector', function() {
+  test('layer getIntersection() with selector', function () {
     var stage = addStage();
     var layer = new Konva.Layer({
-      name: 'layer'
+      name: 'layer',
     });
 
     var group = new Konva.Group({
-      name: 'group'
+      name: 'group',
     });
 
     var circle = new Konva.Circle({
@@ -225,7 +276,7 @@ suite('Stage', function() {
       radius: 70,
       strokeWidth: 4,
       fill: 'red',
-      stroke: 'black'
+      stroke: 'black',
     });
 
     group.add(circle);
@@ -259,7 +310,7 @@ suite('Stage', function() {
   });
 
   // ======================================================
-  test('stage getIntersection() edge detection', function() {
+  test('stage getIntersection() edge detection', function () {
     var stage = addStage();
     var layer = new Konva.Layer();
 
@@ -270,7 +321,6 @@ suite('Stage', function() {
       strokeWidth: 4,
       fill: 'red',
       stroke: 'black',
-      id: 'redCircle'
     });
 
     var greenCircle = new Konva.Circle({
@@ -280,10 +330,9 @@ suite('Stage', function() {
       strokeWidth: 4,
       fill: 'green',
       stroke: 'black',
-      id: 'greenCircle'
     });
 
-    stage.on('contentMousemove', function() {
+    stage.on('contentMousemove', function () {
       var pos = stage.getPointerPosition();
       var shape = stage.getIntersection(pos);
       if (!shape) {
@@ -296,23 +345,24 @@ suite('Stage', function() {
     stage.add(layer);
 
     assert.equal(
-      stage.getIntersection({ x: 370, y: 93 }).getId(),
-      'greenCircle',
+      stage.getIntersection({ x: 370, y: 93 }),
+      greenCircle,
       'shape should be greenCircle'
     );
-    // TODO: this passes in the browser but fails in phantomjs.  no idea why.
-    //assert.equal(stage.getIntersection(371, 93).getId(), 'greenCircle', 'shape should be greenCircle');
     assert.equal(
-      stage.getIntersection({ x: 372, y: 93 }).getId(),
-      'redCircle',
+      stage.getIntersection({ x: 371, y: 93 }),
+      greenCircle,
+      'shape should be greenCircle'
+    );
+    assert.equal(
+      stage.getIntersection({ x: 372, y: 93 }),
+      redCircle,
       'shape should be redCircle'
     );
-
-    //console.log(layer.hitCanvas.context._context.getImageData(1, 1, 1, 1).data)
   });
 
   // ======================================================
-  test('test getAllIntersections', function() {
+  test('test getAllIntersections', function () {
     var stage = addStage();
     var layer = new Konva.Layer();
 
@@ -323,7 +373,7 @@ suite('Stage', function() {
       strokeWidth: 4,
       fill: 'red',
       stroke: 'black',
-      id: 'redCircle'
+      id: 'redCircle',
     });
 
     var greenCircle = new Konva.Circle({
@@ -333,7 +383,7 @@ suite('Stage', function() {
       strokeWidth: 4,
       fill: 'green',
       stroke: 'black',
-      id: 'greenCircle'
+      id: 'greenCircle',
     });
 
     layer.add(redCircle);
@@ -465,10 +515,16 @@ suite('Stage', function() {
       'greenCircle',
       '16) second intersection should be greenCircle'
     );
+
+    // now hide layer and but force visible for shape.
+
+    layer.hide();
+    redCircle.visible(true);
+    assert.equal(stage.getAllIntersections(redCircle.position()).length, 0);
   });
 
   // ======================================================
-  test('test getAllIntersections for text', function() {
+  test('test getAllIntersections for text', function () {
     var stage = addStage();
     var layer = new Konva.Layer();
 
@@ -477,7 +533,7 @@ suite('Stage', function() {
       y: 0,
       text: 'Hello world',
       fontSize: 50,
-      name: 'intersectText'
+      name: 'intersectText',
     });
 
     layer.add(text);
@@ -492,7 +548,27 @@ suite('Stage', function() {
   });
 
   // ======================================================
-  test('scale stage after add layer', function() {
+  test('Should not throw on clip for stage', function () {
+    // no asserts, because we check throw
+    var stage = addStage({
+      clipFunc: function () {},
+    });
+    var layer = new Konva.Layer();
+
+    var text = new Konva.Text({
+      x: 0,
+      y: 0,
+      text: 'Hello world',
+      fontSize: 50,
+      name: 'intersectText',
+    });
+
+    layer.add(text);
+    stage.add(layer);
+  });
+
+  // ======================================================
+  test('scale stage after add layer', function () {
     var stage = addStage();
     var layer = new Konva.Layer();
     var circle = new Konva.Circle({
@@ -501,7 +577,7 @@ suite('Stage', function() {
       radius: 70,
       fill: 'green',
       stroke: 'black',
-      strokeWidth: 4
+      strokeWidth: 4,
     });
 
     layer.add(circle);
@@ -515,7 +591,7 @@ suite('Stage', function() {
   });
 
   // ======================================================
-  test('scale stage before add shape', function() {
+  test('scale stage before add shape', function () {
     var stage = addStage();
     var layer = new Konva.Layer();
     var circle = new Konva.Circle({
@@ -524,7 +600,7 @@ suite('Stage', function() {
       radius: 70,
       fill: 'green',
       stroke: 'black',
-      strokeWidth: 4
+      strokeWidth: 4,
     });
 
     stage.setScale({ x: 0.5, y: 0.5 });
@@ -537,7 +613,7 @@ suite('Stage', function() {
   });
 
   // ======================================================
-  test('remove stage', function() {
+  test('remove stage', function () {
     var stage = addStage();
     var layer = new Konva.Layer();
     var circle = new Konva.Circle({
@@ -546,7 +622,7 @@ suite('Stage', function() {
       radius: 70,
       fill: 'green',
       stroke: 'black',
-      strokeWidth: 4
+      strokeWidth: 4,
     });
 
     layer.add(circle);
@@ -557,7 +633,7 @@ suite('Stage', function() {
   });
 
   // ======================================================
-  test('destroy stage', function() {
+  test('destroy stage', function () {
     var container = Konva.document.createElement('div');
 
     konvaContainer.appendChild(container);
@@ -567,7 +643,7 @@ suite('Stage', function() {
       width: 578,
       height: 200,
       id: 'stageFalconId',
-      name: 'stageFalconName'
+      name: 'stageFalconName',
     });
 
     var layer = new Konva.Layer();
@@ -579,7 +655,7 @@ suite('Stage', function() {
       stroke: 'black',
       strokeWidth: 4,
       id: 'circleFalconId',
-      name: 'circleFalconName'
+      name: 'circleFalconName',
     });
 
     layer.add(circle);
@@ -636,19 +712,19 @@ suite('Stage', function() {
   });
 
   // ======================================================
-  test('scale stage with no shapes', function() {
+  test('scale stage with no shapes', function () {
     var stage = addStage();
 
     var layer = new Konva.Layer();
 
     stage.add(layer);
-    stage.setScale(0.5);
+    stage.setScaleX(0.5);
 
     stage.draw();
   });
 
   // ======================================================
-  test('test stage.getStage()', function() {
+  test('test stage.getStage()', function () {
     var stage = addStage();
 
     assert.notEqual(stage.getStage(), undefined);
@@ -656,7 +732,7 @@ suite('Stage', function() {
     //console.log(stage.getStage());
   });
 
-  test('add multiple layers to stage', function() {
+  test('add multiple layers to stage', function () {
     var stage = addStage();
     var layer1 = new Konva.Layer();
     var layer2 = new Konva.Layer();
@@ -665,7 +741,7 @@ suite('Stage', function() {
     assert.equal(stage.getLayers().length, 3, 'stage has exactly three layers');
   });
   // ======================================================
-  test('test drag and click', function() {
+  test('test drag and click', function () {
     var stage = addStage();
     var layer = new Konva.Layer();
     var rect = new Konva.Rect({
@@ -674,13 +750,13 @@ suite('Stage', function() {
       width: 50,
       height: 50,
       fill: 'red',
-      draggable: true
+      draggable: true,
     });
 
     layer.add(rect);
     stage.add(layer);
 
-    rect.on('dblclick', function() {
+    rect.on('dblclick', function () {
       assert(false, 'double click fired');
     });
 
@@ -689,32 +765,32 @@ suite('Stage', function() {
     // simulate dragging
     stage.simulateMouseDown({
       x: 60,
-      y: y
+      y: y,
     });
 
     stage.simulateMouseMove({
       x: 61,
-      y: y
+      y: y,
     });
 
     stage.simulateMouseMove({
       x: 62,
-      y: y
+      y: y,
     });
 
     stage.simulateMouseMove({
       x: 63,
-      y: y
+      y: y,
     });
 
     stage.simulateMouseMove({
       x: 64,
-      y: y
+      y: y,
     });
 
     stage.simulateMouseUp({
       x: 65,
-      y: y
+      y: y,
     });
 
     assert.equal(Konva.isDragging(), false);
@@ -722,18 +798,64 @@ suite('Stage', function() {
     // simulate click
     stage.simulateMouseDown({
       x: 66,
-      y: y
+      y: y,
     });
 
     stage.simulateMouseUp({
       x: 66,
-      y: y
+      y: y,
     });
     assert.equal(Konva.isDragging(), false);
     assert.equal(Konva.DD.node, undefined);
   });
 
-  test('can listen click on empty areas', function() {
+  // ======================================================
+  test('do not trigger stage click after dragend', function () {
+    var stage = addStage();
+    var layer = new Konva.Layer();
+    var rect = new Konva.Rect({
+      x: 0,
+      y: 0,
+      width: 50,
+      height: 50,
+      fill: 'red',
+      draggable: true,
+    });
+
+    layer.add(rect);
+    stage.add(layer);
+
+    var clicks = 0;
+
+    stage.on('click', function () {
+      debugger;
+      clicks += 1;
+    });
+
+    // simulate dragging
+    stage.simulateMouseDown({
+      x: 25,
+      y: 25,
+    });
+
+    stage.simulateMouseMove({
+      x: 100,
+      y: 100,
+    });
+
+    // move rect out of mouse
+    rect.x(-30);
+    rect.y(-30);
+
+    stage.simulateMouseUp({
+      x: 100,
+      y: 100,
+    });
+
+    assert.equal(clicks, 0);
+  });
+
+  test('can listen click on empty areas', function () {
     var stage = addStage();
     var layer = new Konva.Layer();
     stage.add(layer);
@@ -744,31 +866,31 @@ suite('Stage', function() {
     var mouseups = 0;
     var mousemoves = 0;
 
-    stage.on('mousedown', function(e) {
+    stage.on('mousedown', function (e) {
       mousedowns += 1;
       assert.equal(e.target, stage);
       assert.equal(e.currentTarget, stage);
     });
 
-    stage.on('mousemove', function(e) {
+    stage.on('mousemove', function (e) {
       mousemoves += 1;
       assert.equal(e.target, stage);
       assert.equal(e.currentTarget, stage);
     });
 
-    stage.on('mouseup', function(e) {
+    stage.on('mouseup', function (e) {
       mouseups += 1;
       assert.equal(e.target, stage);
       assert.equal(e.currentTarget, stage);
     });
 
-    stage.on('click', function(e) {
+    stage.on('click', function (e) {
       clicks += 1;
       assert.equal(e.target, stage);
       assert.equal(e.currentTarget, stage);
     });
 
-    stage.on('dblclick', function(e) {
+    stage.on('dblclick', function (e) {
       dblicks += 1;
       assert.equal(e.target, stage);
       assert.equal(e.currentTarget, stage);
@@ -777,17 +899,17 @@ suite('Stage', function() {
     // simulate dragging
     stage.simulateMouseDown({
       x: 60,
-      y: 10
+      y: 10,
     });
 
     stage.simulateMouseMove({
       x: 60,
-      y: 10
+      y: 10,
     });
 
     stage.simulateMouseUp({
       x: 65,
-      y: 10
+      y: 10,
     });
 
     assert.equal(mousedowns, 1, 'first mousedown registered');
@@ -798,12 +920,12 @@ suite('Stage', function() {
 
     stage.simulateMouseDown({
       x: 60,
-      y: 10
+      y: 10,
     });
 
     stage.simulateMouseUp({
       x: 65,
-      y: 10
+      y: 10,
     });
 
     assert.equal(mousedowns, 2, 'second mousedown registered');
@@ -812,7 +934,7 @@ suite('Stage', function() {
     assert.equal(dblicks, 1, 'first dbclick registered');
   });
 
-  test('test can listen taps on empty areas', function() {
+  test('can listen taps on empty areas', function () {
     var stage = addStage();
     var layer = new Konva.Layer();
     stage.add(layer);
@@ -823,59 +945,42 @@ suite('Stage', function() {
     var touchends = 0;
     var touchmoves = 0;
 
-    stage.on('touchstart', function(e) {
+    stage.on('touchstart', function (e) {
       touchstarts += 1;
       assert.equal(e.target, stage);
       assert.equal(e.currentTarget, stage);
     });
 
-    stage.on('touchend', function(e) {
+    stage.on('touchend', function (e) {
       touchends += 1;
       assert.equal(e.target, stage);
       assert.equal(e.currentTarget, stage);
     });
 
-    stage.on('touchmove', function(e) {
+    stage.on('touchmove', function (e) {
       touchmoves += 1;
       assert.equal(e.target, stage);
       assert.equal(e.currentTarget, stage);
     });
 
-    stage.on('tap', function(e) {
+    stage.on('tap', function (e) {
       taps += 1;
       assert.equal(e.target, stage);
       assert.equal(e.currentTarget, stage);
     });
 
-    stage.on('dbltap', function(e) {
+    stage.on('dbltap', function (e) {
       dbltaps += 1;
       assert.equal(e.target, stage);
       assert.equal(e.currentTarget, stage);
     });
 
-    var top = stage.content.getBoundingClientRect().top;
     // simulate dragging
-    stage._touchstart({
-      touches: [
-        {
-          clientX: 100,
-          clientY: 100 + top
-        }
-      ]
-    });
+    stage.simulateTouchStart([{ x: 100, y: 100, id: 1 }]);
 
-    stage._touchmove({
-      touches: [
-        {
-          clientX: 100,
-          clientY: 100 + top
-        }
-      ]
-    });
+    stage.simulateTouchMove([{ x: 100, y: 100, id: 1 }]);
 
-    stage._touchend({
-      touches: []
-    });
+    stage.simulateTouchEnd([], [{ x: 100, y: 100, id: 1 }]);
 
     assert.equal(touchstarts, 1, 'first touchstart registered');
     assert.equal(touchends, 1, 'first touchends registered');
@@ -883,18 +988,9 @@ suite('Stage', function() {
     assert.equal(touchmoves, 1, 'first touchmove registered');
     assert.equal(dbltaps, 0, 'no  dbltap registered');
 
-    stage._touchstart({
-      touches: [
-        {
-          clientX: 100,
-          clientY: 100 + top
-        }
-      ]
-    });
+    stage.simulateTouchStart([{ x: 100, y: 100, id: 1 }]);
 
-    stage._touchend({
-      touches: []
-    });
+    stage.simulateTouchEnd([], [{ x: 100, y: 100, id: 1 }]);
 
     assert.equal(touchstarts, 2, 'first touchstart registered');
     assert.equal(touchends, 2, 'first touchends registered');
@@ -902,13 +998,85 @@ suite('Stage', function() {
     assert.equal(dbltaps, 1, 'dbltap registered');
   });
 
-  test('make sure it does not trigger too many events', function() {
+  test('pass context and wheel events to shape', function () {
+    var stage = addStage();
+    var layer = new Konva.Layer();
+    stage.add(layer);
+
+    var rect = new Konva.Rect({
+      x: 50,
+      y: 50,
+      width: 100,
+      height: 100,
+      fill: 'red',
+    });
+    layer.add(rect);
+    layer.draw();
+
+    var contextmenus = 0;
+    var wheels = 0;
+
+    // test on empty
+    stage.on('contextmenu', function (e) {
+      contextmenus += 1;
+      assert.equal(e.target, stage);
+      assert.equal(e.currentTarget, stage);
+    });
+
+    stage.on('wheel', function (e) {
+      wheels += 1;
+      assert.equal(e.target, stage);
+      assert.equal(e.currentTarget, stage);
+    });
+
+    var top = stage.content.getBoundingClientRect().top;
+    stage._contextmenu({
+      clientX: 0,
+      clientY: top + 0,
+    });
+    stage._wheel({
+      clientX: 0,
+      clientY: top + 0,
+    });
+
+    assert.equal(contextmenus, 1, 'first contextment registered');
+    assert.equal(wheels, 1, 'first wheel registered');
+
+    stage.off('contextmenu');
+    stage.off('wheel');
+
+    // test on shape
+    stage.on('contextmenu', function (e) {
+      contextmenus += 1;
+      assert.equal(e.target, rect);
+      assert.equal(e.currentTarget, stage);
+    });
+
+    stage.on('wheel', function (e) {
+      wheels += 1;
+      assert.equal(e.target, rect);
+      assert.equal(e.currentTarget, stage);
+    });
+    stage._contextmenu({
+      clientX: 60,
+      clientY: top + 60,
+    });
+    stage._wheel({
+      clientX: 60,
+      clientY: top + 60,
+    });
+
+    assert.equal(contextmenus, 2, 'second contextment registered');
+    assert.equal(wheels, 2, 'second wheel registered');
+  });
+
+  test('make sure it does not trigger too many events', function () {
     var stage = addStage();
     var layer = new Konva.Layer();
     stage.add(layer);
     var rect = new Konva.Rect({
       width: stage.width(),
-      height: stage.height()
+      height: stage.height(),
     });
     layer.add(rect);
     layer.draw();
@@ -918,25 +1086,25 @@ suite('Stage', function() {
     var mousedowns = 0;
     var mouseups = 0;
 
-    stage.on('mousedown', function(e) {
+    stage.on('mousedown', function (e) {
       mousedowns += 1;
       assert.equal(e.target, rect);
       assert.equal(e.currentTarget, stage);
     });
 
-    stage.on('mouseup', function(e) {
+    stage.on('mouseup', function (e) {
       mouseups += 1;
       assert.equal(e.target, rect);
       assert.equal(e.currentTarget, stage);
     });
 
-    stage.on('click', function(e) {
+    stage.on('click', function (e) {
       clicks += 1;
       assert.equal(e.target, rect);
       assert.equal(e.currentTarget, stage);
     });
 
-    stage.on('dblclick', function(e) {
+    stage.on('dblclick', function (e) {
       dblicks += 1;
       assert.equal(e.target, rect);
       assert.equal(e.currentTarget, stage);
@@ -945,12 +1113,12 @@ suite('Stage', function() {
     // simulate dragging
     stage.simulateMouseDown({
       x: 60,
-      y: 10
+      y: 10,
     });
 
     stage.simulateMouseUp({
       x: 65,
-      y: 10
+      y: 10,
     });
 
     assert.equal(mousedowns, 1, 'first mousedown registered');
@@ -960,12 +1128,12 @@ suite('Stage', function() {
 
     stage.simulateMouseDown({
       x: 60,
-      y: 10
+      y: 10,
     });
 
     stage.simulateMouseUp({
       x: 65,
-      y: 10
+      y: 10,
     });
 
     assert.equal(mousedowns, 2, 'second mousedown registered');
@@ -974,73 +1142,197 @@ suite('Stage', function() {
     assert.equal(dblicks, 1, 'first dbclick registered');
   });
 
-  test.skip('toDataURL + HDPI', function(done) {
-    Konva.pixelRatio = 2;
-
+  test('test mouseover event on stage', function () {
     var stage = addStage();
     var layer = new Konva.Layer();
+    stage.add(layer);
+    var rect1 = new Konva.Rect({
+      x: 50,
+      y: 50,
+      width: 50,
+      height: 50,
+      fill: 'red',
+    });
+    layer.add(rect1);
 
-    var image = new Image();
-    image.onload = function() {
-      var lion = new Konva.Image({
-        image: image,
-        draggable: true
-      });
+    var rect2 = new Konva.Rect({
+      x: 100,
+      y: 100,
+      width: 50,
+      height: 50,
+      fill: 'red',
+    });
+    layer.add(rect2);
+    layer.draw();
 
-      lion.cache();
-      lion.drawHitFromCache();
+    var mouseover = 0;
 
-      layer.add(lion);
-      stage.add(layer);
-      stage.draw();
+    stage.on('mouseover', function (e) {
+      mouseover += 1;
 
-      var snapshotStage = addStage();
+      if (mouseover === 1) {
+        assert.equal(e.target, stage);
+        assert.equal(e.currentTarget, stage);
+      }
+      if (mouseover === 2) {
+        assert.equal(e.target, rect1);
+      }
+      if (mouseover === 3) {
+        assert.equal(e.target, rect2);
+      }
+    });
 
-      stage.toImage({
-        callback: function(image) {
-          var imageNode = new Konva.Image({
-            image: image
-          });
-          var snapshotLayer = new Konva.Layer();
-          snapshotLayer.add(imageNode);
-          snapshotStage.add(snapshotLayer);
-          snapshotStage.draw();
-          Konva.pixelRatio = undefined;
-          done();
-        }
-      });
-    };
-    image.src = 'assets/lion.png';
+    stage._mouseover({
+      clientX: 0,
+      clientY: 0,
+    });
+
+    assert.equal(mouseover, 1, 'initial over');
+    stage.simulateMouseMove({
+      x: 10,
+      y: 10,
+    });
+
+    assert.equal(mouseover, 1, 'moved inside stage - no new over events');
+
+    stage.simulateMouseMove({
+      x: 60,
+      y: 60,
+    });
+
+    assert.equal(mouseover, 2, 'moved into inner shape, trigger new mouseover');
+
+    stage.simulateMouseMove({
+      x: 110,
+      y: 110,
+    });
+
+    assert.equal(
+      mouseover,
+      3,
+      'moved into second shape, trigger new mouseover'
+    );
+
+    stage.simulateMouseMove({
+      x: 10,
+      y: 10,
+    });
+
+    assert.equal(
+      mouseover,
+      4,
+      'moved to empty space shape, trigger new mouseover'
+    );
   });
 
-  test('toDataURL in sync way', function() {
+  test('toCanvas in sync way', function () {
+    var stage = addStage();
+    var layer = new Konva.Layer();
+    var circle = new Konva.Circle({
+      x: stage.width() / 2,
+      y: stage.height() / 2,
+      fill: 'black',
+      radius: 50,
+    });
+    layer.add(circle);
+    stage.add(layer);
+
+    compareCanvases(stage.toCanvas(), layer.toCanvas(), 200);
+  });
+
+  test('toDataURL with hidden layer', function () {
     var stage = addStage();
     var layer = new Konva.Layer();
     var circle = new Konva.Circle({
       x: stage.width() / 2,
       y: stage.height() / 2,
       fill: 'red',
-      radius: 50
+      radius: 50,
     });
     layer.add(circle);
     stage.add(layer);
-    assert.equal(stage.toDataURL(), layer.toDataURL());
+
+    var stageDataUrl = stage.toDataURL();
+    layer.visible(false);
+    assert.equal(stage.toDataURL() === stageDataUrl, false);
   });
 
-  test('check hit graph with stage listeting property', function() {
+  test('toDataURL works as toCanvas', function () {
+    var stage = addStage();
+    var layer = new Konva.Layer();
+    var circle = new Konva.Circle({
+      x: stage.width() / 2,
+      y: stage.height() / 2,
+      fill: 'red',
+      radius: 50,
+    });
+    layer.add(circle);
+    stage.add(layer);
+
+    assert.equal(stage.toDataURL(), stage.toCanvas().toDataURL());
+  });
+
+  test('toDataURL should no relate on stage size', function () {
+    var stage = addStage();
+    var layer = new Konva.Layer();
+    var circle = new Konva.Circle({
+      x: stage.width() / 2,
+      y: stage.height() / 2,
+      fill: 'red',
+      radius: stage.height() * 0.6,
+    });
+    layer.add(circle);
+    stage.add(layer);
+
+    compareCanvases(stage.toCanvas(circle.getClientRect()), circle.toCanvas());
+  });
+
+  test('toCanvas with large size', function () {
+    var stage = addStage();
+    var layer = new Konva.Layer();
+
+    var radius = stage.height() / 2 + 10;
+    var circle = new Konva.Circle({
+      x: stage.height() / 2,
+      y: stage.height() / 2,
+      fill: 'black',
+      radius: radius,
+    });
+    layer.add(circle);
+    stage.add(layer);
+
+    var stageCanvas = stage.toCanvas({
+      x: -10,
+      y: -10,
+      width: stage.height() + 20,
+      height: stage.height() + 20,
+    });
+
+    var canvas = createCanvas();
+    canvas.width = radius * 2;
+    canvas.height = radius * 2;
+    var context = canvas.getContext('2d');
+    context.beginPath();
+    context.arc(radius, radius, radius, 0, 2 * Math.PI);
+    context.fillStyle = 'black';
+    context.fill();
+    compareCanvases(stageCanvas, canvas, 100);
+  });
+
+  test('check hit graph with stage listening property', function () {
     var stage = addStage();
     var layer = new Konva.Layer();
     stage.add(layer);
     showHit(layer);
     var circle = new Konva.Circle({
       fill: 'green',
-      radius: 50
+      radius: 50,
     });
     layer.add(circle);
 
     var pos = {
       x: stage.width() / 2,
-      y: stage.height() / 2
+      y: stage.height() / 2,
     };
     circle.position(pos);
     stage.draw();
@@ -1057,5 +1349,39 @@ suite('Stage', function() {
     stage.listening(true);
     stage.draw();
     assert.equal(stage.getIntersection(pos), circle, 'circle again');
+  });
+
+  test('toDataURL should use pixelRatio 1 by default', function (done) {
+    var stage = addStage();
+
+    var url = stage.toDataURL();
+    var image = new window.Image();
+    image.onload = function () {
+      assert.equal(image.width, stage.width());
+      assert.equal(image.height, stage.height());
+      done();
+    };
+    image.src = url;
+  });
+
+  test('show a warning if the stage has too many layers', function () {
+    var stage = addStage();
+    var oldWarn = Konva.Util.warn;
+    var called = false;
+    Konva.Util.warn = function () {
+      called = true;
+    };
+
+    // let say 5 is max number
+    stage.add(new Konva.Layer());
+    stage.add(new Konva.Layer());
+    stage.add(new Konva.Layer());
+    stage.add(new Konva.Layer());
+    stage.add(new Konva.Layer());
+    stage.add(new Konva.Layer());
+    stage.add(new Konva.Layer());
+
+    Konva.Util.warn = oldWarn;
+    assert.equal(called, true);
   });
 });

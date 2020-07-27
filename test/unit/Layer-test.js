@@ -1,6 +1,6 @@
-suite('Layer', function() {
+suite('Layer', function () {
   // ======================================================
-  test('test canvas inline styles', function() {
+  test('test canvas inline styles', function () {
     var stage = addStage();
 
     var layer = new Konva.Layer();
@@ -11,7 +11,7 @@ suite('Layer', function() {
       radius: 70,
       fill: 'green',
       stroke: 'black',
-      strokeWidth: 4
+      strokeWidth: 4,
     });
 
     layer.add(circle);
@@ -40,7 +40,7 @@ suite('Layer', function() {
     assert.equal(style.left, '0px', 'canvas left should be 0px');
   });
 
-  test('test clear()', function() {
+  test('test clear()', function () {
     var stage = addStage();
     var layer = new Konva.Layer();
     var circle = new Konva.Circle({
@@ -51,12 +51,12 @@ suite('Layer', function() {
       stroke: 'black',
       strokeWidth: 4,
       name: 'myCircle',
-      draggable: true
+      draggable: true,
     });
 
     circle.colorKey = '#000000';
 
-    circle.on('mouseover', function() {
+    circle.on('mouseover', function () {
       console.log('mouseover');
     });
 
@@ -82,7 +82,7 @@ suite('Layer', function() {
     showHit(layer);
   });
 
-  test('test clear() with bounds', function() {
+  test('test clear() with bounds', function () {
     var stage = addStage();
     var layer = new Konva.Layer();
     var circle = new Konva.Circle({
@@ -93,12 +93,12 @@ suite('Layer', function() {
       stroke: 'black',
       strokeWidth: 4,
       name: 'myCircle',
-      draggable: true
+      draggable: true,
     });
 
     circle.colorKey = '#000000';
 
-    circle.on('mouseover', function() {
+    circle.on('mouseover', function () {
       console.log('mouseover');
     });
 
@@ -125,7 +125,7 @@ suite('Layer', function() {
   });
 
   // ======================================================
-  test('layer getIntersection()', function() {
+  test('layer getIntersection()', function () {
     var stage = addStage();
     var layer = new Konva.Layer();
 
@@ -136,7 +136,7 @@ suite('Layer', function() {
       strokeWidth: 4,
       fill: 'red',
       stroke: 'black',
-      id: 'redCircle'
+      id: 'redCircle',
     });
 
     var greenCircle = new Konva.Circle({
@@ -146,7 +146,7 @@ suite('Layer', function() {
       strokeWidth: 4,
       fill: 'green',
       stroke: 'black',
-      id: 'greenCircle'
+      id: 'greenCircle',
     });
 
     layer.add(redCircle);
@@ -171,14 +171,14 @@ suite('Layer', function() {
   });
 
   // ======================================================
-  test('layer getIntersection() with selector', function() {
+  test('layer getIntersection() with selector', function () {
     var stage = addStage();
     var layer = new Konva.Layer({
-      name: 'layer'
+      name: 'layer',
     });
 
     var group = new Konva.Group({
-      name: 'group'
+      name: 'group',
     });
 
     var circle = new Konva.Circle({
@@ -187,7 +187,7 @@ suite('Layer', function() {
       radius: 70,
       strokeWidth: 4,
       fill: 'red',
-      stroke: 'black'
+      stroke: 'black',
     });
 
     group.add(circle);
@@ -221,10 +221,10 @@ suite('Layer', function() {
   });
 
   // ======================================================
-  test('set layer visibility', function() {
+  test('set layer visibility', function () {
     var stage = addStage();
     var layer = new Konva.Layer({
-      visible: false
+      visible: false,
     });
     var rect = new Konva.Rect({
       x: 200,
@@ -233,9 +233,9 @@ suite('Layer', function() {
       fill: 'green',
       stroke: 'black',
       strokeWidth: 4,
-      scale: [3, 1],
+      scale: { x: 3, y: 1 },
       draggable: true,
-      strokeScaleEnabled: false
+      strokeScaleEnabled: false,
     });
 
     rect.colorKey = '000000';
@@ -245,12 +245,12 @@ suite('Layer', function() {
   });
 
   // ======================================================
-  test('set clearBeforeDraw to false, and test toDataURL for stage, layer, group, and shape', function() {
+  test('set clearBeforeDraw to false, and test toDataURL for stage, layer, group, and shape', function () {
     var stage = addStage();
 
     var layer = new Konva.Layer({
       clearBeforeDraw: false,
-      throttle: 999
+      throttle: 999,
     });
 
     var group = new Konva.Group();
@@ -261,7 +261,7 @@ suite('Layer', function() {
       radius: 70,
       fill: 'green',
       stroke: 'black',
-      strokeWidth: 4
+      strokeWidth: 4,
     });
 
     group.add(circle);
@@ -282,7 +282,7 @@ suite('Layer', function() {
   });
 
   // ======================================================
-  test('save layer as png', function() {
+  test('save layer as png', function () {
     var stage = addStage();
     var layer = new Konva.Layer();
 
@@ -292,7 +292,7 @@ suite('Layer', function() {
       radius: 70,
       fill: 'violet',
       stroke: 'black',
-      strokeWidth: 4
+      strokeWidth: 4,
     });
 
     layer.add(Circle);
@@ -302,7 +302,7 @@ suite('Layer', function() {
   });
 
   // ======================================================
-  test('save layer as low quality jpg', function() {
+  test('save layer as low quality jpg', function () {
     var stage = addStage();
     var layer = new Konva.Layer();
 
@@ -312,7 +312,7 @@ suite('Layer', function() {
       radius: 70,
       fill: 'violet',
       stroke: 'black',
-      strokeWidth: 4
+      strokeWidth: 4,
     });
 
     layer.add(circle);
@@ -320,12 +320,12 @@ suite('Layer', function() {
 
     var dataUrl = layer.toDataURL({
       mimeType: 'image/jpeg',
-      quality: 0.2
+      quality: 0.2,
     });
   });
 
   // ======================================================
-  test('save layer as high quality jpg', function() {
+  test('save layer as high quality jpg', function () {
     var stage = addStage();
     var layer = new Konva.Layer();
 
@@ -335,7 +335,7 @@ suite('Layer', function() {
       radius: 70,
       fill: 'violet',
       stroke: 'black',
-      strokeWidth: 4
+      strokeWidth: 4,
     });
 
     layer.add(circle);
@@ -343,12 +343,12 @@ suite('Layer', function() {
 
     var dataUrl = layer.toDataURL({
       mimeType: 'image/jpeg',
-      quality: 1
+      quality: 1,
     });
   });
 
   // ======================================================
-  test('hit graph enable disable', function() {
+  test('hit graph enable disable', function () {
     var stage = addStage();
     var layer = new Konva.Layer();
 
@@ -358,7 +358,7 @@ suite('Layer', function() {
       radius: 70,
       fill: 'red',
       stroke: 'black',
-      strokeWidth: 4
+      strokeWidth: 4,
     });
 
     layer.add(circle);
@@ -378,78 +378,45 @@ suite('Layer', function() {
     assert.equal(layer.shouldDrawHit(), true);
   });
 
-  // ======================================================
-  test.skip('hit graph caching', function() {
-    var stage = addStage();
-    var layer = new Konva.Layer();
-    var originGetImageData = layer.getHitCanvas().getContext().getImageData;
-    var count = 0;
-    layer.getHitCanvas().getContext().getImageData = function() {
-      count += 1;
-      return originGetImageData.apply(this, arguments);
-    };
-
-    stage.add(layer);
-
-    var circle = new Konva.Circle({
-      x: stage.getWidth() / 2,
-      y: stage.getHeight() / 2,
-      radius: 70,
-      fill: 'red',
-      stroke: 'black',
-      strokeWidth: 4
-    });
-    layer.add(circle);
-    layer.draw();
-    assert.equal(count, 0, 'draw should not touch getImageData');
-    var top = stage.content.getBoundingClientRect().top;
-    stage._mousemove({
-      clientX: stage.getWidth() / 2,
-      clientY: stage.getHeight() / 2 + top
-    });
-
-    // while mouse event we need hit canvas info
-    assert.equal(count, 1, 'getImageData should be called once');
-
-    stage._mousemove({
-      clientX: stage.getWidth() / 2,
-      clientY: stage.getHeight() / 2 + top + 2
-    });
-
-    assert.equal(
-      count,
-      1,
-      'getImageData should not be called, because data is cached'
-    );
-
-    var group = new Konva.Group();
-    group.cache({
-      width: 1,
-      height: 1
-    });
-    layer.add(group);
-
-    group.draw();
-
-    stage._mousemove({
-      clientX: stage.getWidth() / 2,
-      clientY: stage.getHeight() / 2 + top + 2
-    });
-
-    // after drawing group hit cache should be cleared
-    assert.equal(
-      count,
-      2,
-      'while creating new cache getImageData should be called'
-    );
-  });
-
-  it('get/set layer size', function() {
+  test('get/set layer size', function () {
     var stage = addStage();
     var layer = new Konva.Layer();
     stage.add(layer);
     assert.deepEqual(layer.size(), stage.size());
     assert.equal(layer.width(), stage.width());
     assert.equal(layer.height(), stage.height());
+  });
+
+  test('get/set imageSmoothingEnabled', function (done) {
+    var imageObj = new Image();
+    imageObj.onload = function () {
+      var stage = addStage();
+
+      var layer = new Konva.Layer({
+        imageSmoothingEnabled: false,
+      });
+      var darth = new Konva.Image({
+        image: imageObj,
+        scaleX: 5,
+        scaleY: 5,
+      });
+
+      layer.add(darth);
+      stage.add(layer);
+
+      assert.equal(layer.getContext().imageSmoothingEnabled, false);
+
+      layer.imageSmoothingEnabled(true);
+
+      assert.equal(layer.getContext().imageSmoothingEnabled, true);
+
+      layer.imageSmoothingEnabled(false);
+      // change size
+      stage.width(stage.width() + 1);
+      assert.equal(layer.getContext().imageSmoothingEnabled, false);
+
+      done();
+    };
+    imageObj.src = 'assets/darth-vader.jpg';
   });
 });

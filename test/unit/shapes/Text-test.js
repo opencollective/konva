@@ -1,8 +1,8 @@
 'use strict';
 
-suite('Text', function() {
+suite('Text', function () {
   // ======================================================
-  test('text with empty config is allowed', function() {
+  test('text with empty config is allowed', function () {
     var stage = addStage();
     var layer = new Konva.Layer();
 
@@ -14,7 +14,32 @@ suite('Text', function() {
   });
 
   // ======================================================
-  test('text with undefined text property should not throw an error', function() {
+  // TODO: what is the best UX here?
+  test('check text with FALSY values', function () {
+    var stage = addStage();
+    var layer = new Konva.Layer();
+
+    stage.add(layer);
+    var text = new Konva.Text();
+
+    layer.add(text);
+    layer.draw();
+
+    text.text(0);
+    assert.equal(text.text(), '0');
+
+    text.text(true);
+    assert.equal(text.text(), 'true');
+
+    text.text(false);
+    assert.equal(text.text(), 'false');
+
+    text.setText(undefined);
+    assert.equal(text.text(), '');
+  });
+
+  // ======================================================
+  test('text with undefined text property should not throw an error', function () {
     var stage = addStage();
     var layer = new Konva.Layer();
 
@@ -27,7 +52,7 @@ suite('Text', function() {
     assert.equal(text.getWidth(), 0);
   });
 
-  test('add text with shadows', function() {
+  test('add text with shadows', function () {
     var stage = addStage();
     var layer = new Konva.Layer();
 
@@ -41,9 +66,9 @@ suite('Text', function() {
       height: 100,
       shadowColor: 'black',
       shadowBlur: 1,
-      shadowOffset: [10, 10],
+      shadowOffset: { x: 10, y: 10 },
       shadowOpacity: 0.2,
-      cornerRadius: 10
+      cornerRadius: 10,
     });
 
     var text = new Konva.Text({
@@ -62,17 +87,16 @@ suite('Text', function() {
       padding: 10,
       shadowColor: 'red',
       shadowBlur: 1,
-      shadowOffset: [10, 10],
-      shadowOpacity: 0.2
+      shadowOffset: { x: 10, y: 10 },
+      shadowOpacity: 0.2,
     });
 
     var group = new Konva.Group({
-      draggable: true
+      draggable: true,
     });
 
     // center text box
-    rect.offset(text.getWidth() / 2, text.getHeight() / 2);
-    text.offset(text.getWidth() / 2, text.getHeight() / 2);
+    rect.offsetX(text.getWidth() / 2, text.getHeight() / 2);
 
     group.add(rect);
     group.add(text);
@@ -82,7 +106,7 @@ suite('Text', function() {
     assert.equal(text.getClassName(), 'Text', 'getClassName should be Text');
   });
 
-  test.skip('text with fill and shadow', function() {
+  test('text with fill and shadow', function () {
     var stage = addStage();
     var layer = new Konva.Layer();
 
@@ -95,7 +119,7 @@ suite('Text', function() {
       shadowColor: 'darkgrey',
       shadowOffsetX: 0,
       shadowOffsetY: 50,
-      shadowBlur: 0
+      shadowBlur: 0,
     });
 
     layer.add(text);
@@ -113,7 +137,7 @@ suite('Text', function() {
     compareLayerAndCanvas(layer, canvas, 254);
   });
 
-  test('text cache with fill and shadow', function() {
+  test('text cache with fill and shadow', function () {
     var stage = addStage();
     var layer1 = new Konva.Layer();
     layer1.getCanvas().setPixelRatio(1);
@@ -130,7 +154,7 @@ suite('Text', function() {
       shadowOffsetY: 50,
       opacity: 1,
       shadowBlur: 10,
-      draggable: true
+      draggable: true,
     });
     layer1.add(text1);
 
@@ -140,12 +164,10 @@ suite('Text', function() {
     layer2.add(text1.clone().cache({ pixelRatio: 2 }));
     stage.add(layer1, layer2);
 
-    if (!window.isPhantomJS) {
-      compareLayers(layer1, layer2, 220);
-    }
+    compareLayers(layer1, layer2, 220);
   });
 
-  test('text cache with fill and shadow and some scale', function() {
+  test('text cache with fill and shadow and some scale', function () {
     var stage = addStage();
     var layer1 = new Konva.Layer();
     stage.add(layer1);
@@ -161,13 +183,13 @@ suite('Text', function() {
       shadowOffsetY: 50,
       opacity: 1,
       shadowBlur: 10,
-      draggable: true
+      draggable: true,
     });
     layer1.add(text1);
 
     var layer2 = new Konva.Layer({
       scaleX: 0.5,
-      scaleY: 0.5
+      scaleY: 0.5,
     });
     stage.add(layer2);
 
@@ -182,17 +204,17 @@ suite('Text', function() {
 
     stage.draw();
 
-    compareLayers(layer1, layer2, 150);
+    compareLayers(layer1, layer2, 200);
   });
 
   // ======================================================
-  test('add text with letter spacing', function() {
+  test('add text with letter spacing', function () {
     var stage = addStage();
     var layer = new Konva.Layer();
 
     stage.add(layer);
     var text = new Konva.Text({
-      text: 'hello'
+      text: 'hello',
     });
     layer.add(text);
     layer.draw();
@@ -204,7 +226,7 @@ suite('Text', function() {
     layer.draw();
   });
   // ======================================================
-  test('text getters and setters', function() {
+  test('text getters and setters', function () {
     var stage = addStage();
     var layer = new Konva.Layer();
 
@@ -225,20 +247,20 @@ suite('Text', function() {
       padding: 10,
       shadowColor: 'black',
       shadowBlur: 1,
-      shadowOffset: [10, 10],
+      shadowOffset: { X: 10, y: 10 },
       shadowOpacity: 0.2,
-      draggable: true
+      draggable: true,
     });
 
     // center text box
-    text.offset(text.getWidth() / 2, text.getHeight() / 2);
+    text.offsetX(text.getWidth() / 2, text.getHeight() / 2);
 
     layer.add(text);
     stage.add(layer);
 
     /*
-         * test getters and setters
-         */
+     * test getters and setters
+     */
 
     assert.equal(text.getX(), stage.getWidth() / 2);
     assert.equal(text.getY(), stage.getHeight() / 2);
@@ -259,7 +281,7 @@ suite('Text', function() {
     assert.equal(text.getWidth(), 400);
     assert.equal(text.getHeight(), 100);
     assert(text.getTextWidth() > 0, 'text width should be greater than 0');
-    assert(text.getTextHeight() > 0, 'text height should be greater than 0');
+    assert(text.fontSize() > 0, 'text height should be greater than 0');
 
     text.setX(1);
     text.setY(2);
@@ -303,7 +325,7 @@ suite('Text', function() {
   });
 
   // ======================================================
-  test('reset text auto width', function() {
+  test('reset text auto width', function () {
     var stage = addStage();
     var layer = new Konva.Layer();
 
@@ -311,7 +333,7 @@ suite('Text', function() {
       text: 'Hello World!',
       fontSize: 50,
       draggable: true,
-      width: 10
+      width: 10,
     });
 
     assert.equal(text.width(), 10);
@@ -323,7 +345,7 @@ suite('Text', function() {
   });
 
   // ======================================================
-  test('text multi line', function() {
+  test('text multi line', function () {
     var stage = addStage();
     var layer = new Konva.Layer();
 
@@ -332,13 +354,14 @@ suite('Text', function() {
       y: 10,
       width: 380,
       height: 300,
-      fill: 'red'
+      fill: 'red',
     });
 
     var text = new Konva.Text({
       x: 10,
       y: 10,
-      text: "HEADING\n\nAll the world's a stage, merely players. They have their exits and their entrances; And one man in his time plays many parts.",
+      text:
+        "HEADING\n\nAll the world's a stage, merely players. They have their exits and their entrances; And one man in his time plays many parts.",
       //text: 'HEADING\n\nThis is a really cool paragraph. \n And this is a footer.',
       fontSize: 14,
       fontFamily: 'Calibri',
@@ -351,7 +374,7 @@ suite('Text', function() {
       lineHeight: 20,
       align: 'center',
       draggable: true,
-      wrap: 'WORD'
+      wrap: 'WORD',
     });
 
     rect.height(text.getHeight());
@@ -364,44 +387,8 @@ suite('Text', function() {
     assert.equal(text.getLineHeight(), 20);
   });
 
-    // ======================================================
-    test('text single line with ellipsis', function() {
-        var stage = addStage();
-        var layer = new Konva.Layer();
-
-        var rect = new Konva.Rect({
-            x: 10,
-            y: 10,
-            width: 380,
-            height: 300,
-            fill: 'red'
-        });
-
-        var text = new Konva.Text({
-            x: 10,
-            y: 10,
-            text: "HEADING\n\nAll the world's a stage, merely players. They have their exits and their entrances; And one man in his time plays many parts.",
-            fontSize: 14,
-            fontFamily: 'Calibri',
-            fontStyle: 'normal',
-            fill: '#555',
-            width: 100,
-            padding: 0,
-            lineHeight: 20,
-            align: 'center',
-            wrap: 'none',
-            ellipsis: true
-        });
-
-        layer.add(rect).add(text);
-        stage.add(layer);
-
-        assert.equal(text.textArr.length, 3);
-        assert.equal(text.textArr[2].text.slice(-1), '…');
-    });
-
   // ======================================================
-  test('text multi line with justify align', function() {
+  test('text single line with ellipsis', function () {
     var stage = addStage();
     var layer = new Konva.Layer();
 
@@ -410,13 +397,51 @@ suite('Text', function() {
       y: 10,
       width: 380,
       height: 300,
-      fill: 'yellow'
+      fill: 'red',
     });
 
     var text = new Konva.Text({
       x: 10,
       y: 10,
-      text: "HEADING\n\n    All the world's a stage, merely players. They have their exits and their entrances; And one man in his time plays many parts.",
+      text:
+        "HEADING\n\nAll the world's a stage, merely players. They have their exits and their entrances; And one man in his time plays many parts.",
+      fontSize: 14,
+      fontFamily: 'Calibri',
+      fontStyle: 'normal',
+      fill: '#555',
+      width: 100,
+      padding: 0,
+      lineHeight: 20,
+      align: 'center',
+      wrap: 'none',
+      ellipsis: true,
+    });
+
+    layer.add(rect).add(text);
+    stage.add(layer);
+
+    assert.equal(text.textArr.length, 3);
+    assert.equal(text.textArr[2].text.slice(-1), '…');
+  });
+
+  // ======================================================
+  test('text multi line with justify align', function () {
+    var stage = addStage();
+    var layer = new Konva.Layer();
+
+    var rect = new Konva.Rect({
+      x: 10,
+      y: 10,
+      width: 380,
+      height: 300,
+      fill: 'yellow',
+    });
+
+    var text = new Konva.Text({
+      x: 10,
+      y: 10,
+      text:
+        "HEADING\n\n    All the world's a stage, merely players. They have their exits and their entrances; And one man in his time plays many parts.",
       fontSize: 14,
       fontFamily: 'Calibri',
       fontStyle: 'normal',
@@ -424,37 +449,64 @@ suite('Text', function() {
       width: 380,
       align: 'justify',
       letterSpacing: 5,
-      draggable: true
+      draggable: true,
     });
 
     rect.height(text.getHeight());
     layer.add(rect).add(text);
 
-    // var text2 = new Konva.Text({
-    //     x: 10,
-    //     y: 110,
-    //     text: 'HEADING\n\n    All the world\'s a stage, merely players. They have their exits and their entrances; And one man in his time plays many parts.',
-    //     fontSize: 14,
-    //     fontFamily: 'Calibri',
-    //     fontStyle: 'normal',
-    //     fill: '#555',
-    //     width: 380,
-    //     letterSpacing: 5,
-    //     draggable: true
-    // });
-
-    // layer.add(rect).add(text2);
-
     stage.add(layer);
 
     var trace =
-      'fillStyle;fillText();translate();translate();fillStyle;fillText();translate();fillStyle;fillText();translate();fillStyle;fillText();translate();translate();fillStyle;fillText();translate();fillStyle;fillText();translate();fillStyle;fillText();translate();fillStyle;fillText();translate();restore();translate();save();fillStyle;fillText();translate();fillStyle;fillText();translate();fillStyle;fillText();translate();fillStyle;fillText();translate();fillStyle;fillText();translate();fillStyle;fillText();translate();fillStyle;fillText();translate();fillStyle;fillText();translate();fillStyle;fillText();translate();fillStyle;fillText();translate();fillStyle;fillText();translate();fillStyle;fillText();translate();fillStyle;fillText();translate();fillStyle;fillText();translate();fillStyle;fillText();translate();fillStyle;fillText();translate();fillStyle;fillText();translate();fillStyle;fillText();translate();fillStyle;fillText();translate();fillStyle;fillText();translate();fillStyle;fillText();translate();fillStyle;fillText();translate();restore();translate();restore();restore();';
+      'fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();restore();save();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();restore();restore();';
 
     assert.equal(layer.getContext().getTrace(true), trace);
   });
 
   // ======================================================
-  test('text multi line with shadows', function() {
+  test('text multi line with justify align and decoration', function () {
+    var stage = addStage();
+    var layer = new Konva.Layer();
+
+    var rect = new Konva.Rect({
+      x: 10,
+      y: 10,
+      width: 380,
+      height: 300,
+      fill: 'yellow',
+    });
+
+    var text = new Konva.Text({
+      x: 10,
+      y: 10,
+      text:
+        "HEADING\n\n    All the world's a stage, merely players. They have their exits and their entrances; And one man in his time plays many parts.",
+      fontSize: 14,
+      fontFamily: 'Calibri',
+      fontStyle: 'normal',
+      fill: '#555',
+      width: 380,
+      align: 'justify',
+      letterSpacing: 5,
+      textDecoration: 'underline',
+      padding: 20,
+      draggable: true,
+    });
+
+    rect.height(text.getHeight());
+
+    layer.add(rect).add(text);
+
+    stage.add(layer);
+
+    var trace =
+      'fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();restore();save();save();beginPath();moveTo();lineTo();stroke();restore();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();restore();save();save();beginPath();moveTo();lineTo();stroke();restore();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();fillStyle;fillText();restore();restore();';
+
+    assert.equal(layer.getContext().getTrace(true), trace);
+  });
+
+  // ======================================================
+  test('text multi line with shadows', function () {
     var stage = addStage();
     var layer = new Konva.Layer();
 
@@ -463,7 +515,8 @@ suite('Text', function() {
       y: 10,
       //stroke: '#555',
       //strokeWidth: 5,
-      text: "HEADING\n\nAll the world's a stage, and all the men and women merely players. They have their exits and their entrances; And one man in his time plays many parts.",
+      text:
+        "HEADING\n\nAll the world's a stage, and all the men and women merely players. They have their exits and their entrances; And one man in his time plays many parts.",
       //text: 'HEADING\n\nThis is a really cool paragraph. \n And this is a footer.',
       fontSize: 16,
       fontFamily: 'Calibri',
@@ -476,9 +529,9 @@ suite('Text', function() {
       align: 'center',
       shadowColor: 'red',
       shadowBlur: 1,
-      shadowOffset: [10, 10],
+      shadowOffset: { x: 10, y: 10 },
       shadowOpacity: 0.5,
-      draggable: true
+      draggable: true,
     });
 
     layer.add(text);
@@ -487,9 +540,7 @@ suite('Text', function() {
   });
 
   // ======================================================
-  // skiping this test for now. It fails on travis. WHYYY??!?!?!
-  // TODO: restore it
-  test.skip('text multi line with underline and spacing', function() {
+  test('text multi line with underline and spacing', function () {
     var stage = addStage();
     var layer = new Konva.Layer();
 
@@ -501,19 +552,50 @@ suite('Text', function() {
       fill: 'red',
       letterSpacing: 5,
       textDecoration: 'underline',
-      draggable: true
+      draggable: true,
     });
 
     layer.add(text);
     stage.add(layer);
 
     var trace =
-      'clearRect(0,0,578,200);save();transform(1,0,0,1,10,10);font=normal normal 15px Arial;textBaseline=middle;textAlign=left;save();translate(0,7.5);save();save();beginPath();moveTo(0,8);lineTo(52,8);stroke();restore();fillStyle=red;fillText(h,0,0);translate(13,0);fillStyle=red;fillText(e,0,0);translate(13,0);fillStyle=red;fillText(l,0,0);translate(8,0);fillStyle=red;fillText(l,0,0);translate(8,0);fillStyle=red;fillText(o,0,0);translate(13,0);restore();translate(0,15);save();save();beginPath();moveTo(0,8);lineTo(56,8);stroke();restore();fillStyle=red;fillText(w,0,0);translate(16,0);fillStyle=red;fillText(o,0,0);translate(13,0);fillStyle=red;fillText(r,0,0);translate(10,0);fillStyle=red;fillText(l,0,0);translate(8,0);fillStyle=red;fillText(d,0,0);translate(13,0);restore();translate(0,15);restore();restore();';
+      'clearRect(0,0,578,200);save();transform(1,0,0,1,10,10);font=normal normal 80px "Arial";textBaseline=middle;textAlign=left;translate(0,0);save();save();beginPath();moveTo(0,80);lineTo(189,80);stroke();restore();fillStyle=red;fillText(h,0,40);fillStyle=red;fillText(e,49,40);fillStyle=red;fillText(l,98,40);fillStyle=red;fillText(l,121,40);fillStyle=red;fillText(o,144,40);restore();save();save();beginPath();moveTo(0,160);lineTo(211,160);stroke();restore();fillStyle=red;fillText(w,0,120);fillStyle=red;fillText(o,63,120);fillStyle=red;fillText(r,112,120);fillStyle=red;fillText(l,144,120);fillStyle=red;fillText(d,167,120);restore();restore();';
 
     assert.equal(layer.getContext().getTrace(), trace);
   });
 
-  test('text multi line with strike', function() {
+  // ======================================================
+  test('text with underline and large line height', function () {
+    var stage = addStage();
+    var layer = new Konva.Layer();
+
+    var text = new Konva.Text({
+      fontFamily: 'Arial',
+      text: 'text',
+      fontSize: 80,
+      lineHeight: 2,
+      textDecoration: 'underline',
+    });
+
+    layer.add(text);
+    stage.add(layer);
+
+    var canvas = createCanvas();
+    var context = canvas.getContext('2d');
+    context.translate(0, 80);
+    context.lineWidth = 2;
+    context.font = '80px Arial';
+    context.textBaseline = 'middle';
+    context.fillText('text', 0, 0);
+    context.beginPath();
+    context.moveTo(0, 40);
+    context.lineTo(text.width(), 40);
+    context.lineWidth = 80 / 15;
+    context.stroke();
+    compareLayerAndCanvas(layer, canvas, 50);
+  });
+
+  test('text multi line with strike', function () {
     var stage = addStage();
     var layer = new Konva.Layer();
 
@@ -523,20 +605,18 @@ suite('Text', function() {
       text: 'hello\nworld',
       fontSize: 80,
       fill: 'red',
-      textDecoration: 'line-through'
+      textDecoration: 'line-through',
     });
 
     layer.add(text);
     stage.add(layer);
-    // TODO
 
     var trace =
-      'clearRect();save();transform();font;textBaseline;textAlign;save();translate();save();save();beginPath();moveTo();lineTo();stroke();restore();fillStyle;fillText();restore();translate();save();save();beginPath();moveTo();lineTo();stroke();restore();fillStyle;fillText();restore();translate();restore();restore();';
-    console.log(layer.getContext().getTrace(true));
+      'clearRect();save();transform();font;textBaseline;textAlign;translate();save();save();beginPath();moveTo();lineTo();stroke();restore();fillStyle;fillText();restore();save();save();beginPath();moveTo();lineTo();stroke();restore();fillStyle;fillText();restore();restore();';
     assert.equal(layer.getContext().getTrace(true), trace);
   });
 
-  test('text multi line with underline and strike', function() {
+  test('text multi line with underline and strike', function () {
     var stage = addStage();
     var layer = new Konva.Layer();
 
@@ -546,19 +626,20 @@ suite('Text', function() {
       text: 'hello\nworld',
       fontSize: 80,
       fill: 'red',
-      textDecoration: 'underline line-through'
+      textDecoration: 'underline line-through',
     });
 
     layer.add(text);
     stage.add(layer);
 
     var trace =
-      'clearRect();save();transform();font;textBaseline;textAlign;save();translate();save();save();beginPath();moveTo();lineTo();stroke();restore();save();beginPath();moveTo();lineTo();stroke();restore();fillStyle;fillText();restore();translate();save();save();beginPath();moveTo();lineTo();stroke();restore();save();beginPath();moveTo();lineTo();stroke();restore();fillStyle;fillText();restore();translate();restore();restore();';
+      'clearRect();save();transform();font;textBaseline;textAlign;translate();save();save();beginPath();moveTo();lineTo();stroke();restore();save();beginPath();moveTo();lineTo();stroke();restore();fillStyle;fillText();restore();save();save();beginPath();moveTo();lineTo();stroke();restore();save();beginPath();moveTo();lineTo();stroke();restore();fillStyle;fillText();restore();restore();';
+
     assert.equal(layer.getContext().getTrace(true), trace);
   });
 
   // ======================================================
-  test('change font size should update text data', function() {
+  test('change font size should update text data', function () {
     var stage = addStage();
     var layer = new Konva.Layer();
 
@@ -572,7 +653,7 @@ suite('Text', function() {
       fill: '#555',
       align: 'center',
       padding: 5,
-      draggable: true
+      draggable: true,
     });
 
     var width = text.getWidth();
@@ -584,19 +665,57 @@ suite('Text', function() {
     text.setFontSize(30);
     layer.draw();
 
-    //console.log(text.getHeight() + ',' + height);
-
     assert(text.getWidth() > width, 'width should have increased');
     assert(text.getHeight() > height, 'height should have increased');
   });
-  test('get text width', function() {
+
+  test('text vertical align', function () {
+    var stage = addStage();
+    var layer = new Konva.Layer();
+
+    var rect = new Konva.Rect({
+      x: 10,
+      y: 10,
+      width: 200,
+      height: 100,
+      stroke: 'black',
+    });
+    layer.add(rect);
+
+    var text = new Konva.Text({
+      x: rect.x(),
+      y: rect.y(),
+      width: rect.width(),
+      height: rect.height(),
+      text: 'Some awesome text',
+      fontSize: 16,
+      fill: '#555',
+      align: 'center',
+      padding: 10,
+      draggable: true,
+    });
+
+    assert.equal(text.verticalAlign(), 'top');
+
+    text.verticalAlign('middle');
+
+    layer.add(text);
+    stage.add(layer);
+
+    var trace =
+      'clearRect(0,0,578,200);save();transform(1,0,0,1,10,10);beginPath();rect(0,0,200,100);closePath();lineWidth=2;strokeStyle=black;stroke();restore();save();transform(1,0,0,1,10,10);font=normal normal 16px "Arial";textBaseline=middle;textAlign=left;translate(10,42);save();fillStyle=#555;fillText(Some awesome text,17.523,8);restore();restore();';
+
+    assert.equal(layer.getContext().getTrace(), trace);
+  });
+
+  test('get text width', function () {
     var stage = addStage();
     var layer = new Konva.Layer();
     stage.add(layer);
     var text = new Konva.Text({
       text: 'hello asd fasdf asdf asd fasdf asdfasd fa sds helloo',
       fill: 'black',
-      width: 100
+      width: 100,
     });
 
     layer.add(text);
@@ -604,12 +723,12 @@ suite('Text', function() {
     assert.equal(text.getTextWidth() > 0 && text.getTextWidth() < 100, true);
   });
 
-  test('default text color should be black', function() {
+  test('default text color should be black', function () {
     var text = new Konva.Text();
     assert.equal(text.fill(), 'black');
   });
 
-  test('text with stoke and strokeScaleEnabled', function() {
+  test('text with stoke and strokeScaleEnabled', function () {
     var stage = addStage();
     var layer = new Konva.Layer();
 
@@ -622,7 +741,7 @@ suite('Text', function() {
       stroke: 'red',
       strokeScaleEnabled: false,
       strokeWidth: 2,
-      scaleX: 2
+      scaleX: 2,
     });
     layer.add(text);
     stage.add(layer);
@@ -640,7 +759,7 @@ suite('Text', function() {
     compareLayerAndCanvas(layer, canvas);
   });
 
-  test('text getSelfRect', function() {
+  test('text getSelfRect', function () {
     var stage = addStage();
     var layer = new Konva.Layer();
 
@@ -649,7 +768,7 @@ suite('Text', function() {
       y: 50,
       x: 50,
       fill: 'black',
-      text: 'text'
+      text: 'text',
     });
 
     layer.add(text);
@@ -661,64 +780,299 @@ suite('Text', function() {
       x: 0,
       y: 0,
       width: text.width(),
-      height: 50
+      height: 50,
     });
   });
 
-  test.skip('cache text', function() {
+  test('linear gradient', function () {
+    // Konva.pixelRatio = 1;
     var stage = addStage();
     var layer = new Konva.Layer();
 
     var text = new Konva.Text({
-      fontSize: 20,
-      y: 50,
-      x: 50,
-      fill: 'black',
-      text: 'Hello world with cache!\nHow are you?',
-      draggable: true
-    });
-
-    text.cache();
-    layer.add(text);
-
-    var text2 = new Konva.Text({
-      fontSize: 20,
-      y: 50,
-      x: 260,
-      fill: 'black',
-      text: 'Hello world without cache!\nHow are you?',
-      draggable: true
-    });
-
-    layer.add(text2);
-
-    stage.add(layer);
-  });
-
-  test('gradient', function() {
-    var stage = addStage();
-    var layer = new Konva.Layer();
-
-    var text = new Konva.Text({
-      fontSize: 100,
-      y: 10,
-      x: 10,
-      fillLinearGradientStartPoint: { x: -50, y: -50 },
-      fillLinearGradientEndPoint: { x: 50, y: 50 },
-      fillLinearGradientColorStops: [0, 'yellow', 1, 'yellow'],
+      fontSize: 50,
+      fillLinearGradientStartPoint: { x: 0, y: 0 },
+      fillLinearGradientEndPoint: { x: 300, y: 0 },
+      fillLinearGradientColorStops: [0, 'black', 1, 'red'],
       text: 'Text with gradient!!',
-      draggable: true
+      draggable: true,
     });
     layer.add(text);
     stage.add(layer);
 
-    //stage.on('mousemove', function() {
-    //    console.log(stage.getPointerPosition());
-    //});
-    var data = layer.getContext().getImageData(41, 50, 1, 1).data;
-    assert.equal(data[0], 255, 'full green');
-    assert.equal(data[1], 255, 'full red');
-    assert.equal(data[2], 0, 'no blue');
-    assert.equal(data[3], 255, '255 alpha - fully visible');
+    var canvas = createCanvas();
+    var ctx = canvas.getContext('2d');
+
+    ctx.fillStyle = 'green';
+    ctx.font = 'normal 50px Arial';
+    ctx.textBaseline = 'middle';
+
+    var start = { x: 0, y: 0 };
+    var end = { x: 300, y: 0 };
+    var colorStops = [0, 'black', 1, 'red'];
+    var grd = ctx.createLinearGradient(start.x, start.y, end.x, end.y);
+
+    // build color stops
+    for (var n = 0; n < colorStops.length; n += 2) {
+      grd.addColorStop(colorStops[n], colorStops[n + 1]);
+    }
+    ctx.fillStyle = grd;
+
+    ctx.fillText(text.text(), text.x(), text.y() + text.fontSize() / 2);
+
+    compareLayerAndCanvas(layer, canvas, 200);
+  });
+
+  test('linear gradient multiline', function () {
+    Konva.pixelRatio = 1;
+    var stage = addStage();
+    var layer = new Konva.Layer();
+
+    var text = new Konva.Text({
+      fontSize: 50,
+      fillLinearGradientStartPoint: { x: 0, y: 0 },
+      fillLinearGradientEndPoint: { x: 0, y: 100 },
+      fillLinearGradientColorStops: [0, 'yellow', 1, 'red'],
+      text: 'Text with gradient!!\nText with gradient!!',
+      draggable: true,
+    });
+    layer.add(text);
+    stage.add(layer);
+
+    var canvas = createCanvas();
+    var ctx = canvas.getContext('2d');
+
+    ctx.fillStyle = 'green';
+    ctx.font = 'normal 50px Arial';
+    ctx.textBaseline = 'middle';
+
+    var start = { x: 0, y: 0 };
+    var end = { x: 0, y: 100 };
+    var colorStops = [0, 'yellow', 1, 'red'];
+    var grd = ctx.createLinearGradient(start.x, start.y, end.x, end.y);
+
+    // build color stops
+    for (var n = 0; n < colorStops.length; n += 2) {
+      grd.addColorStop(colorStops[n], colorStops[n + 1]);
+    }
+    ctx.fillStyle = grd;
+
+    ctx.fillText(
+      'Text with gradient!!',
+      text.x(),
+      text.y() + text.fontSize() / 2
+    );
+    ctx.fillText(
+      'Text with gradient!!',
+      text.x(),
+      text.y() + text.fontSize() / 2 + text.fontSize()
+    );
+
+    compareLayerAndCanvas(layer, canvas, 200);
+
+    var data = layer.getContext().getImageData(25, 41, 1, 1).data;
+    delete Konva.pixelRatio;
+  });
+
+  test('radial gradient', function () {
+    var stage = addStage();
+    var layer = new Konva.Layer();
+
+    var text = new Konva.Text({
+      fontSize: 50,
+      y: 0,
+      x: 0,
+      fillRadialGradientStartPoint: { x: 100, y: 0 },
+      fillRadialGradientStartRadius: 0,
+      fillRadialGradientEndRadius: 100,
+      fillRadialGradientEndPoint: { x: 100, y: 0 },
+      fillRadialGradientColorStops: [0, 'yellow', 1, 'red'],
+      text: 'Text with gradient!!',
+      draggable: true,
+    });
+    layer.add(text);
+    stage.add(layer);
+
+    var canvas = createCanvas();
+    var ctx = canvas.getContext('2d');
+
+    ctx.fillStyle = 'green';
+    ctx.font = 'normal 50px Arial';
+    ctx.textBaseline = 'middle';
+
+    var start = { x: 100, y: 0 };
+    var end = { x: 100, y: 0 };
+    var colorStops = [0, 'yellow', 1, 'red'];
+    var grd = ctx.createRadialGradient(start.x, start.y, 0, end.x, end.y, 100);
+
+    // build color stops
+    for (var n = 0; n < colorStops.length; n += 2) {
+      grd.addColorStop(colorStops[n], colorStops[n + 1]);
+    }
+    ctx.fillStyle = grd;
+
+    ctx.translate(0, 25);
+
+    ctx.fillText(text.text(), 0, 0);
+
+    compareLayerAndCanvas(layer, canvas, 200);
+  });
+
+  test('text should be centered in line height', function () {
+    var stage = addStage();
+    var layer = new Konva.Layer();
+
+    layer.add(
+      new Konva.Rect({
+        stroke: 'black',
+        width: 100,
+        height: 40 * 3,
+      })
+    );
+
+    var text = new Konva.Text({
+      fontSize: 40,
+      text: 'Some good text',
+      lineHeight: 3,
+      draggable: true,
+    });
+    layer.add(text);
+    stage.add(layer);
+
+    // this text should look like it is positioned in y = 40
+
+    var trace =
+      'clearRect(0,0,578,200);save();transform(1,0,0,1,0,0);beginPath();rect(0,0,100,120);closePath();lineWidth=2;strokeStyle=black;stroke();restore();save();transform(1,0,0,1,0,0);font=normal normal 40px "Arial";textBaseline=middle;textAlign=left;translate(0,0);save();fillStyle=black;fillText(Some good text,0,60);restore();restore();';
+
+    assert.equal(layer.getContext().getTrace(), trace);
+  });
+
+  test('check wrapping', function () {
+    var stage = addStage();
+    var layer = new Konva.Layer();
+
+    var text = new Konva.Text({
+      fontSize: 40,
+      text: 'Hello, this is some good text',
+      width: 185,
+      draggable: true,
+    });
+    layer.add(text);
+    stage.add(layer);
+
+    var lines = text.textArr;
+
+    // first line should fit "Hello, this"
+    // I faced this issue in large app
+    // we should draw as much text in one line, as possible
+    // so Konva.Text + textarea editing works better
+    assert.equal(lines[0].text, 'Hello, this');
+  });
+
+  test('check trip when go to new line', function () {
+    var stage = addStage();
+    var layer = new Konva.Layer();
+
+    var text = new Konva.Text({
+      text: 'Hello, this is some good text',
+      fontSize: 30,
+    });
+    layer.add(text);
+    stage.add(layer);
+
+    text.setWidth(245);
+
+    var lines = text.textArr;
+
+    // remove all trimming spaces
+    // it also looks better in many cases
+    // it will work as text in div
+    assert.equal(lines[0].text, 'Hello, this is some');
+    assert.equal(lines[1].text, 'good text');
+
+    text.setWidth(261);
+    var lines = text.textArr;
+
+    assert.equal(lines[0].text, 'Hello, this is some');
+    assert.equal(lines[1].text, 'good text');
+    layer.draw();
+  });
+
+  test('image gradient for text', function (done) {
+    Konva.pixelRatio = 1;
+    var imageObj = new Image();
+    imageObj.onload = function () {
+      var stage = addStage();
+      var layer = new Konva.Layer();
+
+      var text = new Konva.Text({
+        text: 'Hello, this is some good text',
+        fontSize: 30,
+        fillPatternImage: imageObj,
+      });
+      layer.add(text);
+      stage.add(layer);
+
+      var canvas = createCanvas();
+      var ctx = canvas.getContext('2d');
+
+      ctx.fillStyle = 'green';
+      ctx.font = 'normal normal 30px Arial';
+      ctx.textBaseline = 'middle';
+
+      var grd = ctx.createPattern(imageObj, 'repeat');
+      ctx.fillStyle = grd;
+
+      ctx.fillText(text.text(), 0, 15);
+
+      compareLayerAndCanvas(layer, canvas, 200);
+      delete Konva.pixelRatio;
+      done();
+    };
+    imageObj.src = 'assets/darth-vader.jpg';
+  });
+
+  test.skip('image gradient for text with scale', function (done) {
+    Konva.pixelRatio = 1;
+    var imageObj = new Image();
+    imageObj.onload = function () {
+      var stage = addStage();
+      var layer = new Konva.Layer();
+
+      var text = new Konva.Text({
+        text: 'Hello, this is some good text',
+        fontSize: 30,
+        fillPatternImage: imageObj,
+        fillPatternScaleX: 0.5,
+        fillPatternScaleY: 0.5,
+      });
+      layer.add(text);
+      stage.add(layer);
+
+      var canvas = createCanvas();
+      var ctx = canvas.getContext('2d');
+
+      ctx.fillStyle = 'green';
+      ctx.font = 'normal normal 30px Arial';
+      ctx.textBaseline = 'middle';
+
+      var grd = ctx.createPattern(imageObj, 'repeat');
+      grd.setTransform({
+        a: 0.5, // Horizontal scaling. A value of 1 results in no scaling.
+        b: 0, // Vertical skewing.
+        c: 0, // Horizontal skewing.
+        d: 0.5, // Vertical scaling. A value of 1 results in no scaling.
+        e: 0, // Horizontal translation (moving).
+        f: 0, // Vertical translation (moving).
+      });
+      ctx.fillStyle = grd;
+
+      ctx.fillText(text.text(), 0, 15);
+
+      compareLayerAndCanvas(layer, canvas, 200);
+      delete Konva.pixelRatio;
+      done();
+    };
+    imageObj.src = 'assets/darth-vader.jpg';
   });
 });

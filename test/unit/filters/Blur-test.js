@@ -1,17 +1,17 @@
-suite('Blur', function() {
+suite('Blur', function () {
   // ======================================================
-  test('basic blur', function(done) {
+  test('basic blur', function (done) {
     this.timeout(5000);
     var stage = addStage();
 
     var imageObj = new Image();
-    imageObj.onload = function() {
+    imageObj.onload = function () {
       var layer = new Konva.Layer();
       darth = new Konva.Image({
         x: 10,
         y: 10,
         image: imageObj,
-        draggable: true
+        draggable: true,
       });
 
       layer.add(darth);
@@ -42,13 +42,13 @@ suite('Blur', function() {
     imageObj.src = 'assets/darth-vader.jpg';
   });
 
-  test('blur group', function() {
+  test('blur group', function () {
     var stage = addStage();
     var layer = new Konva.Layer();
     var group = new Konva.Group({
       x: 100,
       y: 100,
-      draggable: true
+      draggable: true,
     });
     var top = new Konva.Circle({
       x: 0,
@@ -56,7 +56,7 @@ suite('Blur', function() {
       radius: 30,
       fill: 'blue',
       stroke: 'black',
-      strokeWidth: 4
+      strokeWidth: 4,
     });
     var right = new Konva.Circle({
       x: 70,
@@ -64,7 +64,7 @@ suite('Blur', function() {
       radius: 30,
       fill: 'blue',
       stroke: 'black',
-      strokeWidth: 4
+      strokeWidth: 4,
     });
     var bottom = new Konva.Circle({
       x: 0,
@@ -72,7 +72,7 @@ suite('Blur', function() {
       radius: 30,
       fill: 'blue',
       stroke: 'black',
-      strokeWidth: 4
+      strokeWidth: 4,
     });
     var left = new Konva.Circle({
       x: -70,
@@ -80,7 +80,7 @@ suite('Blur', function() {
       radius: 30,
       fill: 'blue',
       stroke: 'black',
-      strokeWidth: 4
+      strokeWidth: 4,
     });
 
     group.add(top).add(right).add(bottom).add(left);
@@ -91,12 +91,12 @@ suite('Blur', function() {
       x: -150,
       y: -150,
       width: 300,
-      height: 300
+      height: 300,
     });
 
     group.offset({
       x: 150,
-      y: 150
+      y: 150,
     });
 
     group.filters([Konva.Filters.Blur]);
@@ -104,23 +104,23 @@ suite('Blur', function() {
 
     layer.draw();
 
-    //document.body.appendChild(group._cache.canvas.hit._canvas);
+    //document.body.appendChild(group._getCanvasCache().hit._canvas);
 
     //showHit(layer);
   });
 
   // ======================================================
-  test('tween blur', function(done) {
+  test('tween blur', function (done) {
     var stage = addStage();
 
     var imageObj = new Image();
-    imageObj.onload = function() {
+    imageObj.onload = function () {
       var layer = new Konva.Layer();
       darth = new Konva.Image({
         x: 10,
         y: 10,
         image: imageObj,
-        draggable: true
+        draggable: true,
       });
 
       layer.add(darth);
@@ -135,14 +135,14 @@ suite('Blur', function() {
         node: darth,
         duration: 2.0,
         blurRadius: 0,
-        easing: Konva.Easings.EaseInOut
+        easing: Konva.Easings.EaseInOut,
       });
 
-      darth.on('mouseover', function() {
+      darth.on('mouseover', function () {
         tween.play();
       });
 
-      darth.on('mouseout', function() {
+      darth.on('mouseout', function () {
         tween.reverse();
       });
 
@@ -152,18 +152,18 @@ suite('Blur', function() {
   });
 
   // ======================================================
-  test('crop blur', function(done) {
+  test('crop blur', function (done) {
     var stage = addStage();
 
     var imageObj = new Image();
-    imageObj.onload = function() {
+    imageObj.onload = function () {
       var layer = new Konva.Layer();
       darth = new Konva.Image({
         x: 10,
         y: 10,
         image: imageObj,
         crop: { x: 128, y: 48, width: 256, height: 128 },
-        draggable: true
+        draggable: true,
       });
 
       layer.add(darth);
@@ -180,18 +180,18 @@ suite('Blur', function() {
   });
 
   // ======================================================
-  test('crop tween blur', function(done) {
+  test('crop tween blur', function (done) {
     var stage = addStage();
 
     var imageObj = new Image();
-    imageObj.onload = function() {
+    imageObj.onload = function () {
       var layer = new Konva.Layer();
       darth = new Konva.Image({
         x: 10,
         y: 10,
         image: imageObj,
         crop: { x: 128, y: 48, width: 256, height: 128 },
-        draggable: true
+        draggable: true,
       });
 
       layer.add(darth);
@@ -206,14 +206,14 @@ suite('Blur', function() {
         node: darth,
         duration: 2.0,
         blurRadius: 0,
-        easing: Konva.Easings.EaseInOut
+        easing: Konva.Easings.EaseInOut,
       });
 
-      darth.on('mouseover', function() {
+      darth.on('mouseover', function () {
         tween.play();
       });
 
-      darth.on('mouseout', function() {
+      darth.on('mouseout', function () {
         tween.reverse();
       });
 
@@ -223,17 +223,17 @@ suite('Blur', function() {
   });
 
   // ======================================================
-  test('transparency', function(done) {
+  test('transparency', function (done) {
     var stage = addStage();
 
     var imageObj = new Image();
-    imageObj.onload = function() {
+    imageObj.onload = function () {
       var layer = new Konva.Layer();
       darth = new Konva.Image({
         x: 10,
         y: 10,
         image: imageObj,
-        draggable: true
+        draggable: true,
       });
 
       layer.add(darth);
@@ -248,14 +248,14 @@ suite('Blur', function() {
         node: darth,
         duration: 2.0,
         blurRadius: 0,
-        easing: Konva.Easings.EaseInOut
+        easing: Konva.Easings.EaseInOut,
       });
 
-      darth.on('mouseover', function() {
+      darth.on('mouseover', function () {
         tween.play();
       });
 
-      darth.on('mouseout', function() {
+      darth.on('mouseout', function () {
         tween.reverse();
       });
 
@@ -265,17 +265,17 @@ suite('Blur', function() {
   });
 
   // ======================================================
-  test('blur hit region', function(done) {
+  test('blur hit region', function (done) {
     var stage = addStage();
 
     var imageObj = new Image();
-    imageObj.onload = function() {
+    imageObj.onload = function () {
       var layer = new Konva.Layer();
       darth = new Konva.Image({
         x: 10,
         y: 10,
         image: imageObj,
-        draggable: true
+        draggable: true,
       });
 
       //console.log(darth.hasStroke())
@@ -289,11 +289,11 @@ suite('Blur', function() {
       darth.drawHitFromCache(100);
       layer.draw();
 
-      showCanvas(darth._cache.canvas.hit._canvas);
+      showCanvas(darth._getCanvasCache().hit._canvas);
 
-      //console.log(darth._cache.canvas.hit.getContext().getTrace());
+      //console.log(darth._getCanvasCache().hit.getContext().getTrace());
 
-      //assert.equal(darth._cache.canvas.hit.getContext().getTrace(true), 'save();translate();beginPath();rect();closePath();save();fillStyle;fill();restore();restore();clearRect();getImageData();putImageData();');
+      //assert.equal(darth._getCanvasCache().hit.getContext().getTrace(true), 'save();translate();beginPath();rect();closePath();save();fillStyle;fill();restore();restore();clearRect();getImageData();putImageData();');
 
       done();
     };
